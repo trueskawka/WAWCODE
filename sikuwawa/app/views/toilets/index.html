@@ -114,16 +114,6 @@
 
       var content = '<p>'+$(this).attr('name')+'</p>';
 
-      var marker = map.addMarker({
-        lat: $(this).attr('data-lat'),
-        lng: $(this).attr('data-lon'),
-        icon: marker_icon,
-        infoWindow: {
-          content: content
-        }
-      });
-
-
       map.drawRoute({
         origin: [my_lat, my_long],
         destination: [$(this).attr('data-lat'), $(this).attr('data-lon')],
@@ -140,7 +130,10 @@
       lng: $(this).attr('data-lon'),
       icon: marker_icon,
       title: 'toilet',
-      click: drawRouteOnClick.bind(this)
+      click: drawRouteOnClick.bind(this),
+      infoWindow: {
+        content: $(this).attr('name')
+      }
       })
     });
 

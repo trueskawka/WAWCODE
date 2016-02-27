@@ -41,6 +41,11 @@
     <div id="map"></div>
   </div>
 
+  <% @toilets.each do |toilet| %>
+  <div class="invisible toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>">
+  </div>
+  <% end %>
+
 </div>
 <!-- /container -->
 
@@ -84,6 +89,25 @@
       always: function() {
       }
     });
+
+    var marker_icon = {
+        url: 'icon.png',
+        size: new google.maps.Size(30, 49),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(15, 35),
+        scaledSize: new google.maps.Size(30, 49)
+    };
+
+    $(".toilet").each(function(){
+      map.addMarker({
+      lat: $(this).attr('data-lat'),
+      lng: $(this).attr('data-lon'),
+      icon: marker_icon,
+      title: 'toilet',
+      click: function(e) {
+        alert('You clicked in this marker');
+      }
+    })});
 
   });
 </script>

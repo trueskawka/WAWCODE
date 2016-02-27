@@ -108,7 +108,10 @@
         scaledSize: new google.maps.Size(30, 49)
     };
 
-    $(".toilet").each(function(){
+    var drawRouteOnClick = function () {
+
+      map.cleanRoute();
+
       var content = '<p>'+$(this).attr('name')+'</p>';
 
       var marker = map.addMarker({
@@ -118,12 +121,42 @@
         infoWindow: {
           content: content
         }
+      });
+
+
+      map.drawRoute({
+        origin: [my_lat, my_long],
+        destination: [$(this).attr('data-lat'), $(this).attr('data-lon')],
+        travelMode: 'walking',
+        strokeColor: '#131540',
+        strokeOpacity: 0.6,
+        strokeWeight: 6
+      });
+    };
+
+    $(".toilet").each(function(){
+      map.addMarker({
+      lat: $(this).attr('data-lat'),
+      lng: $(this).attr('data-lon'),
+      icon: marker_icon,
+      title: 'toilet',
+      click: drawRouteOnClick.bind(this)
       })
     });
 
+    function error(err) {
+      console.warn('ERROR(' + err.code + '): ' + err.message);
+    };
+
+    var options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    };
+
     function getLocation() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
+            navigator.geolocation.getCurrentPosition(showPosition, error, options);
         }
     }
 
@@ -132,6 +165,8 @@
           lat: position.coords.latitude,
           lng: position.coords.longitude
         });
+        my_log = position.coords.latitude;
+        my_lng = position.coords.longitude;
     }
 
     getLocation();

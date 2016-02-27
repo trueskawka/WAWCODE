@@ -23,8 +23,8 @@ ActiveRecord::Schema.define(version: 20160227141915) do
     t.datetime "updated_at",       null: false
     t.string   "name"
     t.string   "adress"
-    t.string   "description"
-    t.string   "type"
+    t.string   "desc"
+    t.string   "toilettype"
   end
 
 end

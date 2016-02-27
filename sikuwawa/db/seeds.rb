@@ -1,6 +1,6 @@
 Toilet.destroy_all
 
-toi2 = Toilet.create(lat: '52.2445696', lon:'21.0201684', disabledfriendly: 0, momfriendly: 0, prize: '1', name: 'Toaleta', adress: '', desc:'',type: 'toilets')
+toi2 = Toilet.create(lat: '52.2445696', lon:'21.0201684', disabledfriendly: 0, momfriendly: 0, prize: '1', name: 'Toaleta', adress: '', desc:'',: 'toilets')
 toi3 = Toilet.create(lat: '52.2071115', lon:'21.083713', disabledfriendly: 0, momfriendly: 0, prize: '2', name: 'Toaleta', adress: '', desc:'',type: 'toilets')
 toi4 = Toilet.create(lat: '52.2405645', lon:'21.0625472', disabledfriendly: 1, momfriendly: 1, prize: '0', name: 'Toaleta', adress: '', desc:'',type: 'toilets')
 toi5 = Toilet.create(lat: '52.2491801', lon:'21.1074932', disabledfriendly: 1, momfriendly: 0, prize: '1', name: 'Toaleta', adress: '', desc:'',type: 'toilets')

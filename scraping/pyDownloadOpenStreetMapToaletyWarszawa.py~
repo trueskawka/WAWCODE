@@ -1,0 +1,10 @@
+import urllib2
+
+url = "http://nominatim.openstreetmap.org/search.php?q=toaleta+publiczna%2C+warszawa&polygon=1&format=xml"
+
+"""Od 2007 mozna w kazdej kawiarni wejsc do toalety"""
+
+if __name__ == "__main__":
+    s = urllib2.urlopen(url)
+    contents = s.read()
+    print contents

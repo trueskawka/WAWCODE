@@ -27,8 +27,12 @@
 
   <div class="collapse" id="navbar-header">
     <div class="inverse p-a">
-      <h3>Collapsed content</h3>
-      <p>Toggleable via the navbar brand.</p>
+      <h3>Find by adress:</h3>
+      <input placeholder="Adress">
+      <button>Submit</button>
+    </div>
+    <div>
+      <p>slider</p>
     </div>
   </div>
   <div class="navbar navbar-default navbar-static-top">
@@ -42,7 +46,7 @@
   </div>
 
   <% @toilets.each do |toilet| %>
-  <div class="invisible toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>">
+  <div class="invisible toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>" name="name">
   </div>
   <% end %>
 
@@ -105,7 +109,21 @@
     };
 
     var drawRouteOnClick = function () {
+
       map.cleanRoute();
+
+      var content = '<p>'+$(this).attr('name')+'</p>';
+
+      var marker = map.addMarker({
+        lat: $(this).attr('data-lat'),
+        lng: $(this).attr('data-lon'),
+        icon: marker_icon,
+        infoWindow: {
+          content: content
+        }
+      });
+
+
       map.drawRoute({
         origin: [my_lat, my_long],
         destination: [$(this).attr('data-lat'), $(this).attr('data-lon')],

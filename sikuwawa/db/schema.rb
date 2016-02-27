@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160227102238) do
+ActiveRecord::Schema.define(version: 20160227141915) do
 
   create_table "toilets", force: :cascade do |t|
     t.float    "lat"
@@ -21,6 +21,10 @@ ActiveRecord::Schema.define(version: 20160227102238) do
     t.float    "prize"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.string   "name"
+    t.string   "adress"
+    t.string   "description"
+    t.string   "type"
   end
 
 end

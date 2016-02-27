@@ -1,183 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <link rel="icon" href="http://v4-alp ha.getbootstrap.com/favicon.ico">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://v4-alp ha.getbootstrap.com/favicon.ico">
 
-  <title>Navbar Template for Bootstrap</title>
+    <title>Navbar Template for Bootstrap</title>
 
-  <!-- Bootstrap core CSS -->
-  <link href="http://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="http://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Custom styles for this template -->
-  <link href="http://v4-alpha.getbootstrap.com/examples/navbar/navbar.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="http://v4-alpha.getbootstrap.com/examples/navbar/navbar.css" rel="stylesheet">
 
-  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-  <script src="http://v4-alpha.getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="http://v4-alpha.getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
 
-  <!--bootstrap switch-->
-  <link href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.0.1/css/bootstrap3/bootstrap-switch.css" rel="stylesheet">
-  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.0.1/js/bootstrap-switch.js"></script>
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <!--bootstrap switch-->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.0.1/css/bootstrap3/bootstrap-switch.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.0.1/js/bootstrap-switch.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 
-</head>
+  </head>
 
-<body>
-<div class="container">
+  <body>
+    <div class="container">
 
-  <div class="collapse" id="navbar-header">
-    <div class="inverse p-a">
-      <h3>Find by adress:</h3>
-      <input placeholder="Adress">
-      <button>Submit</button>
+      <div class="collapse" id="navbar-header">
+        <div class="inverse p-a">
+          <h3>Find by adress:</h3>
+          <input placeholder="Adress">
+          <button>Submit</button>
+        </div>
+        <div>
+          <ul>
+            <li><input id="TheCheckBox" type="checkbox" data-off-text="False" data-on-text="True" checked="false" class="BSswitch">Mom Friendly</li>
+            <li><input type="checkbox" name="my-checkbox" checked>Disabled Friendly</li>
+            <li><input type="checkbox" name="my-checkbox" checked>Free</li>
+          </ul>
+
+        </div>
+      </div>
+      <div class="navbar navbar-default navbar-static-top">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-header">
+          ☰
+        </button>
+      </div>
+
+      <div class="panel">
+        <div id="instructions"></div>
+        <div id="map"></div>
+      </div>
+
+      <% @toilets.each do |toilet| %>
+      <div class="invisible toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>" name="name"></div>
+      <% end %>
+
     </div>
-    <div>
-      <ul>
-        <li><input id="TheCheckBox" type="checkbox" data-off-text="False" data-on-text="True" checked="false" class="BSswitch">Mom Friendly</li>
-        <li><input type="checkbox" name="my-checkbox" checked>Disabled Friendly</li>
-        <li><input type="checkbox" name="my-checkbox" checked>Free</li>
-      </ul>
+    <!-- /container -->
 
-    </div>
-  </div>
-  <div class="navbar navbar-default navbar-static-top">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-header">
-      ☰
-    </button>
-  </div>
-
-  <div class="panel">
-    <div id="map"></div>
-  </div>
-
-  <% @toilets.each do |toilet| %>
-  <div class="invisible toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>" name="name">
-  </div>
-  <% end %>
-
-</div>
-<!-- /container -->
-
-<!-- Bootstrap core JavaScript
+    <!-- Bootstrap core JavaScript
 ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="http://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"></script>
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"></script>
 
-<!-- Maps -->
-<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.22/gmaps.min.js"></script>
+    <!-- Maps -->
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true&amp;language=pl"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.22/gmaps.min.js"></script>
 
-<!-- Temporary -->
-<script>
-  $(document).ready(function() {
+    <!-- Temporary -->
+    <script>
+      $(document).ready(function() {
 
-    var my_lat;
-    var my_long;
+        var my_lat;
+        var my_long;
 
-    var map = new GMaps({
-      el: '#map',
-      lat: 51.5073346,
-      lng: -0.1276831,
-      height: '500px',
-      zoom: 12,
-      zoomControl: true,
-      zoomControlOpt: {
-        style: 'SMALL',
-        position: 'TOP_LEFT'
-      },
-      panControl: false
-    });
-
-    GMaps.geolocate({
-      success: function(position) {
-        map.setCenter(position.coords.latitude, position.coords.longitude);
-        my_lat = position.coords.latitude;
-        my_long = position.coords.longitude;
-      },
-      error: function(error) {
-        alert('Geolocation failed: ' + error.message);
-      },
-      not_supported: function() {
-        alert("Your browser does not support geolocation");
-      },
-      always: function() {
-      }
-    });
-
-    var marker_icon = {
-        url: 'icon.png',
-        size: new google.maps.Size(30, 49),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(15, 35),
-        scaledSize: new google.maps.Size(30, 49)
-    };
-
-    var drawRouteOnClick = function () {
-
-      map.cleanRoute();
-
-      var content = '<p>'+$(this).attr('name')+'</p>';
-
-      map.drawRoute({
-        origin: [my_lat, my_long],
-        destination: [$(this).attr('data-lat'), $(this).attr('data-lon')],
-        travelMode: 'walking',
-        strokeColor: '#131540',
-        strokeOpacity: 0.6,
-        strokeWeight: 6
-      });
-    };
-
-    $(".toilet").each(function(){
-      map.addMarker({
-      lat: $(this).attr('data-lat'),
-      lng: $(this).attr('data-lon'),
-      icon: marker_icon,
-      title: 'toilet',
-      click: drawRouteOnClick.bind(this),
-      infoWindow: {
-        content: $(this).attr('name')
-      }
-      })
-    });
-
-    function error(err) {
-      console.warn('ERROR(' + err.code + '): ' + err.message);
-    };
-
-    var options = {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0
-    };
-
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition, error, options);
-        }
-    }
-
-    function showPosition(position) {
-        map.addMarker({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
+        var map = new GMaps({
+          el: '#map',
+          lat: 51.5073346,
+          lng: -0.1276831,
+          height: '500px',
+          zoom: 12,
+          zoomControl: true,
+          zoomControlOpt: {
+            style: 'SMALL',
+            position: 'TOP_LEFT'
+          },
+          panControl: false
         });
-        my_log = position.coords.latitude;
-        my_lng = position.coords.longitude;
-    }
 
-    getLocation();
+        GMaps.geolocate({
+          success: function(position) {
+            map.setCenter(position.coords.latitude, position.coords.longitude);
+            my_lat = position.coords.latitude;
+            my_long = position.coords.longitude;
+          },
+          error: function(error) {
+            alert('Geolocation failed: ' + error.message);
+          },
+          not_supported: function() {
+            alert("Your browser does not support geolocation");
+          },
+          always: function() {}
+        });
 
-  });
-</script>
+        var marker_icon = {
+          url: 'icon.png',
+          size: new google.maps.Size(30, 49),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(15, 35),
+          scaledSize: new google.maps.Size(30, 49)
+        };
 
-</body>
+        var drawRouteOnClick = function() {
+          map.cleanRoute();
+          map.travelRoute({
+            origin: [
+              my_lat, my_long
+            ],
+            destination: [
+              $(this).attr('data-lat'), $(this).attr('data-lon')
+            ],
+            travelMode: 'walking',
+            step: function(e) {
+              $('#instructions').append('<li>' + e.instructions + '</li>');
+              $('#instructions li:eq(' + e.step_number + ')').delay(450 * e.step_number).fadeIn(200, function() {
+                map.drawPolyline({path: e.path, strokeColor: '#131540', strokeOpacity: 0.6, strokeWeight: 6});
+              });
+            }
+          });
+        }
+
+        $(".toilet").each(function() {
+          map.addMarker({
+            lat: $(this).attr('data-lat'),
+            lng: $(this).attr('data-lon'),
+            icon: marker_icon,
+            title: 'toilet',
+            click: drawRouteOnClick.bind(this),
+            infoWindow: {
+              content: $(this).attr('name')
+            }
+          })
+        });
+
+        function error(err) {
+          console.warn('ERROR(' + err.code + '): ' + err.message);
+        };
+
+        var options = {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        };
+
+        function getLocation() {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, error, options);
+          }
+        }
+
+        function showPosition(position) {
+          map.addMarker({lat: position.coords.latitude, lng: position.coords.longitude});
+          my_log = position.coords.latitude;
+          my_lng = position.coords.longitude;
+        }
+
+        getLocation();
+
+      });
+    </script>
+
+  </body>
 </html>

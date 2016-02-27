@@ -16,7 +16,8 @@ types =[
 ('restauracja','Restauracja'),
 ('mcdonalds','McDonalds'),
 ('CH','Centrum Handlowe'),
-('PR','Parkuj i Jedz')
+('PR','Parkuj i Jedz'),
+('metro','Stacje Metra')
 ]
 
 def extractData(fname, nn, opis):

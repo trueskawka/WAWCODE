@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,60 +19,74 @@
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="http://v4-alpha.getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
 
-<div class="container">
+    <div class="container">
 
-    <div class="collapse" id="navbar-header">
+      <div class="collapse" id="navbar-header">
         <div class="inverse p-a">
-            <h3>Collapsed content</h3>
-            <p>Toggleable via the navbar brand.</p>
+          <h3>Collapsed content</h3>
+          <p>Toggleable via the navbar brand.</p>
         </div>
-    </div>
-    <div class="navbar navbar-default navbar-static-top">
+      </div>
+      <div class="navbar navbar-default navbar-static-top">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-header">
-            ☰
+          ☰
         </button>
-    </div>
+      </div>
 
-    <div class="panel">
+      <div class="panel">
         <div id="map"></div>
+      </div>
+
     </div>
+    <!-- /container -->
 
-</div> <!-- /container -->
-
-
-<!-- Bootstrap core JavaScript
+    <!-- Bootstrap core JavaScript
 ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="http://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"></script>
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"></script>
 
-<!-- Maps -->
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.22/gmaps.min.js"></script>
+    <!-- Maps -->
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.22/gmaps.min.js"></script>
 
-<!-- Temporary -->
-<script>
-    $(document).ready(function(){
+    <!-- Temporary -->
+    <script>
+      $(document).ready(function() {
         var map = new GMaps({
-            el: '#map',
-            lat: 51.5073346,
-            lng: -0.1276831,
-            height: '500px',
-            zoom: 12,
-            zoomControl : true,
-            zoomControlOpt: {
-                style : 'SMALL',
-                position: 'TOP_LEFT'
-            },
-            panControl : false,
+          el: '#map',
+          lat: 51.5073346,
+          lng: -0.1276831,
+          height: '500px',
+          zoom: 12,
+          zoomControl: true,
+          zoomControlOpt: {
+            style: 'SMALL',
+            position: 'TOP_LEFT'
+          },
+          panControl: false
         });
-    });
-</script>
 
+        GMaps.geolocate({
+          success: function(position) {
+            map.setCenter(position.coords.latitude, position.coords.longitude);
+          },
+          error: function(error) {
+            alert('Geolocation failed: ' + error.message);
+          },
+          not_supported: function() {
+            alert("Your browser does not support geolocation");
+          },
+          always: function() {
+          }
+        });
 
-</body>
+      });
+    </script>
+
+  </body>
 </html>

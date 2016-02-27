@@ -84,8 +84,8 @@
 
         var map = new GMaps({
           el: '#map',
-          lat: 51.5073346,
-          lng: -0.1276831,
+          lat: 52.14,
+          lng: 21.0,
           height: '500px',
           zoom: 12,
           zoomControl: true,
@@ -121,6 +121,7 @@
 
         var drawRouteOnClick = function() {
           map.cleanRoute();
+          $('#instructions').empty();
           map.travelRoute({
             origin: [
               my_lat, my_long

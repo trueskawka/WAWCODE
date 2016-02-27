@@ -6,5 +6,13 @@
 </head>
 <body>
     <p>SIKUWAWA</p>
+    <% @toilets.each do |toilet| %>
+    <br>
+    <%= toilet.lat %>
+    <%= toilet.lon %>
+    <%= toilet.disabledfriendly %>
+    <%= toilet.momfriendly %>
+    <%= toilet.prize %>
+    <% end %>
 </body>
 </html>

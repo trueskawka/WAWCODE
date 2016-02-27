@@ -66,6 +66,10 @@
 <!-- Temporary -->
 <script>
   $(document).ready(function() {
+
+    var my_lat;
+    var my_long;
+
     var map = new GMaps({
       el: '#map',
       lat: 51.5073346,
@@ -83,6 +87,8 @@
     GMaps.geolocate({
       success: function(position) {
         map.setCenter(position.coords.latitude, position.coords.longitude);
+        my_lat = position.coords.latitude;
+        my_long = position.coords.longitude;
       },
       error: function(error) {
         alert('Geolocation failed: ' + error.message);
@@ -112,6 +118,22 @@
         alert('You clicked in this marker');
       }
     })});
+
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        }
+    }
+
+    function showPosition(position) {
+        map.addMarker({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
+    }
+
+    getLocation();
 
   });
 </script>

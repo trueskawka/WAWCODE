@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  lat: 1.5
+  lon: 1.5
+  disabledfriendly: 
+  momfriendly: 
+  prize: 1.5
+
+two:
+  lat: 1.5
+  lon: 1.5
+  disabledfriendly: 
+  momfriendly: 
+  prize: 1.5

@@ -46,7 +46,7 @@
   </div>
 
   <% @toilets.each do |toilet| %>
-  <div class="invisible toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>">
+  <div class="invisible toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>" name="name">
   </div>
   <% end %>
 
@@ -109,16 +109,17 @@
     };
 
     $(".toilet").each(function(){
-      map.addMarker({
-      lat: $(this).attr('data-lat'),
-      lng: $(this).attr('data-lon'),
-      icon: marker_icon,
-      title: 'toilet',
-      click: function(e) {
-        alert('You clicked in this marker');
-      }
-    })});
+      var content = '<p>'+$(this).attr('name')+'</p>';
 
+      var marker = map.addMarker({
+        lat: $(this).attr('data-lat'),
+        lng: $(this).attr('data-lon'),
+        icon: marker_icon,
+        infoWindow: {
+          content: content
+        }
+      })
+    });
 
     function getLocation() {
         if (navigator.geolocation) {

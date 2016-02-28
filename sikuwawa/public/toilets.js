@@ -10,6 +10,14 @@ var is_travelling;
 
 var inf = new google.maps.InfoWindow();
 
+var input = document.getElementById('auto-input');
+var autocomplete = new google.maps.places.Autocomplete(input);
+google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+            my_lat = place.geometry.location.lat();
+            my_long = place.geometry.location.lng();
+        });
+
 function findNearest() {}
 
 function findFreeOfCharge() {}

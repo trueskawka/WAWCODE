@@ -91,7 +91,8 @@
       </div>
       <div class="navbar navbar-default navbar-static-top">
         <a class="navbar-brand" href="#">SIKUWAW</a>
-        opcje wyszukiwania <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-header">
+        opcje wyszukiwania
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-header">
           ☰
         </button>
       </div>
@@ -139,32 +140,29 @@
     <script>
       var map;
 
-      function findNearest() {
+      var my_mark;
+      var my_lat;
+      var my_long;
+      var dst_lat;
+      var dst_long;
+      var is_travelling;
 
-      }
+      function findNearest() {}
 
-      function findFreeOfCharge() {
+      function findFreeOfCharge() {}
 
-      }
-
-      function findWithBestOpinions() {
-
-      }
+      function findWithBestOpinions() {}
 
       function cancelRoute() {
         map.cleanRoute();
         $('#instructions').empty();
         $('#instructions-panel').hide('fast', function() {});
         $('#quicksearch').slideDown(200, function() {});
+
+        is_travelling = false;
       }
 
-      $(document).ready(function() {
-        var gMarkers_disabled = [], gMarkers_mom = [], gMarkers_free=[];
-        var toitoi = [], cafe = [], mac = [], parkride = [], stops = [], rest = [], malls = [];
-
-        var my_lat;
-        var my_long;
-
+      function initMap() {
         $('#instructions-panel').hide();
         map = new GMaps({
           el: '#map',
@@ -179,12 +177,45 @@
           },
           panControl: false
         });
+      }
 
+      function drawUserMark() {
+        my_mark = map.addMarker({lat: my_lat, lng: my_long, zIndex: 99999});
+      }
+
+      function drawRoute() {
+        map.cleanRoute();
+        if (is_travelling) {
+          alert("Cos sie popsulo");
+          map.travelRoute({
+            origin: [
+              my_lat, my_long
+            ],
+            destination: [
+              dst_lat, dst_long
+            ],
+            travelMode: 'walking',
+            step: function(e) {
+              $('#instructions').append('<li>' + e.instructions + '</li>');
+              $('#instructions li:eq(' + e.step_number + ')').delay(1 * e.step_number).fadeIn(200, function() {
+                map.drawPolyline({path: e.path, strokeColor: '#131540', strokeOpacity: 0.6, strokeWeight: 6});
+              });
+            }
+          });
+        }
+      }
+
+      /* This uses callbacks, I will just put everything in there so there will be no problem with asynch */
+      function locateUser() {
         GMaps.geolocate({
           success: function(position) {
             map.setCenter(position.coords.latitude, position.coords.longitude);
             my_lat = position.coords.latitude;
             my_long = position.coords.longitude;
+
+            drawUserMark();
+            drawRoute();
+
           },
           error: function(error) {
             alert('Geolocation failed: ' + error.message);
@@ -194,6 +225,23 @@
           },
           always: function() {}
         });
+      }
+
+      $(document).ready(function() {
+        var gMarkers_disabled = [],
+          gMarkers_mom = [],
+          gMarkers_free = [];
+        var toitoi = [],
+          cafe = [],
+          mac = [],
+          parkride = [],
+          stops = [],
+          rest = [],
+          malls = [];
+
+        is_travelling = false;
+        initMap();
+        locateUser();
 
         var marker_icon_toilet = {
           url: 'icon.png',
@@ -265,6 +313,16 @@
           });
         }
 
+        function markerClick() {
+          window.is_travelling = true;
+          dst_lat = $(this).attr('data-lat');
+          dst_long = $(this).attr('data-lon');
+          map.cleanRoute();
+          $('#instructions').empty();
+          $('#instructions-panel').slideDown(200, function() {});
+          $('#quicksearch').hide('fast', function() {});
+        }
+
         $(".toilet").each(function() {
           var marker_icon;
 
@@ -301,11 +359,14 @@
               break;
           }
 
+
+
           var marker = map.addMarker({
             lat: $(this).attr('data-lat'),
             lng: $(this).attr('data-lon'),
             icon: marker_icon,
-            click: drawRouteOnClick.bind(this),
+            click: markerClick.bind(this),
+            /*drawRouteOnClick.bind(this),*/
             infoWindow: {
               content: $(this).attr('name') + '<br>' + $(this).attr('address')
             }
@@ -323,7 +384,7 @@
             gMarkers_free.push(marker);
           }
 
-          switch($(this).attr('type')) {
+          switch ($(this).attr('type')) {
             case 'toilets':
               toitoi.push(marker);
               break;
@@ -357,54 +418,52 @@
 
         });
 
-        var disableMarkers = function(vector){
-            if ($("#free").is(":checked")
-                && $("#disabled").is(":checked")
-                && $("#przewijak").is(":checked")) {
-                  var dism = $(vector).not(gMarkers_mom).get();
-                  var dismd = $(dism).not(gMarkers_disabled).get();
-                  var dismdf = $(dismd).not(gMarkers_free).get();
-                  $.each(dismdf, function(index, obj) {
-                    var marker = map.addMarker(obj);
-                  });
-            } else if ($("#disabled").is(":checked") && $("#free").is(":checked")) {
-              var disd = $(vector).not(gMarkers_disabled).get();
-              var disdf = $(disd).not(gMarkers_free).get();
-              $.each(disdf, function(index, obj) {
-                var marker = map.addMarker(obj);
-              });
-            } else if ($("#disabled").is(":checked") && $("#przewijak").is(":checked")) {
-              var disd = $(vector).not(gMarkers_disabled).get();
-              var disdm = $(disd).not(gMarkers_mom).get();
-              $.each(disdm, function(index, obj) {
-                var marker = map.addMarker(obj);
-              });
-            } else if ($("#free").is(":checked") && $("#przewijak").is(":checked")) {
-              var disd = $(vector).not(gMarkers_free).get();
-              var disdm = $(disd).not(gMarkers_mom).get();
-              $.each(disdm, function(index, obj) {
-                var marker = map.addMarker(obj);
-              });
-            } else if ($("#disabled").is(":checked")) {
-              var disd = $(vector).not(gMarkers_disabled).get();
-              $.each(disd, function(index, obj) {
-                var marker = map.addMarker(obj);
-              });
-            } else if ($("#free").is(":checked")) {
-              var disf = $(vector).not(gMarkers_free).get();
-              $.each(disf, function(index, obj) {
-                var marker = map.addMarker(obj);
-              });
-            } else if ($("#przewijak").is(":checked")) {
-              var dism = $(vector).not(gMarkers_mom).get();
-              $.each(dism, function(index, obj) {
-                var marker = map.addMarker(obj);
-              });
-            } else {
-              $.each(vector, function(index, obj){
-                var marker = map.addMarker(obj);
-              });
-            }
+        var disableMarkers = function(vector) {
+          if ($("#free").is(":checked") && $("#disabled").is(":checked") && $("#przewijak").is(":checked")) {
+            var dism = $(vector).not(gMarkers_mom).get();
+            var dismd = $(dism).not(gMarkers_disabled).get();
+            var dismdf = $(dismd).not(gMarkers_free).get();
+            $.each(dismdf, function(index, obj) {
+              var marker = map.addMarker(obj);
+            });
+          } else if ($("#disabled").is(":checked") && $("#free").is(":checked")) {
+            var disd = $(vector).not(gMarkers_disabled).get();
+            var disdf = $(disd).not(gMarkers_free).get();
+            $.each(disdf, function(index, obj) {
+              var marker = map.addMarker(obj);
+            });
+          } else if ($("#disabled").is(":checked") && $("#przewijak").is(":checked")) {
+            var disd = $(vector).not(gMarkers_disabled).get();
+            var disdm = $(disd).not(gMarkers_mom).get();
+            $.each(disdm, function(index, obj) {
+              var marker = map.addMarker(obj);
+            });
+          } else if ($("#free").is(":checked") && $("#przewijak").is(":checked")) {
+            var disd = $(vector).not(gMarkers_free).get();
+            var disdm = $(disd).not(gMarkers_mom).get();
+            $.each(disdm, function(index, obj) {
+              var marker = map.addMarker(obj);
+            });
+          } else if ($("#disabled").is(":checked")) {
+            var disd = $(vector).not(gMarkers_disabled).get();
+            $.each(disd, function(index, obj) {
+              var marker = map.addMarker(obj);
+            });
+          } else if ($("#free").is(":checked")) {
+            var disf = $(vector).not(gMarkers_free).get();
+            $.each(disf, function(index, obj) {
+              var marker = map.addMarker(obj);
+            });
+          } else if ($("#przewijak").is(":checked")) {
+            var dism = $(vector).not(gMarkers_mom).get();
+            $.each(dism, function(index, obj) {
+              var marker = map.addMarker(obj);
+            });
+          } else {
+            $.each(vector, function(index, obj) {
+              var marker = map.addMarker(obj);
+            });
+          }
         }
 
         $("#disabled").change(function() {
@@ -432,7 +491,7 @@
           }
         });
 
-        $("#mac").change(function(){
+        $("#mac").change(function() {
           if (!this.checked) {
             map.removeMarkers(mac);
           } else {
@@ -440,14 +499,14 @@
           }
         });
 
-        $("#rest").change(function(){
+        $("#rest").change(function() {
           if (!this.checked) {
             map.removeMarkers(rest);
           } else {
             disableMarkers(rest);
           }
         });
-        $("#toitoi").change(function(){
+        $("#toitoi").change(function() {
           if (!this.checked) {
             map.removeMarkers(toitoi);
           } else {
@@ -455,7 +514,7 @@
           }
         });
 
-        $("#cafe").change(function(){
+        $("#cafe").change(function() {
           if (!this.checked) {
             map.removeMarkers(cafe);
           } else {
@@ -463,7 +522,7 @@
           }
         });
 
-        $("#parkride").change(function(){
+        $("#parkride").change(function() {
           if (!this.checked) {
             map.removeMarkers(parkride);
           } else {
@@ -471,7 +530,7 @@
           }
         });
 
-        $("#stops").change(function(){
+        $("#stops").change(function() {
           if (!this.checked) {
             map.removeMarkers(stops);
           } else {
@@ -479,7 +538,7 @@
           }
         });
 
-        $("#malls").change(function(){
+        $("#malls").change(function() {
           if (!this.checked) {
             map.removeMarkers(malls);
           } else {
@@ -487,29 +546,8 @@
           }
         });
 
-        function error(err) {
-          console.warn('ERROR(' + err.code + '): ' + err.message);
-        };
+        setInterval(locateUser, 4000);
 
-        var options = {
-          enableHighAccuracy: true,
-          timeout: 5000,
-          maximumAge: 0
-        };
-
-        function getLocation() {
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition, error, options);
-          }
-        }
-
-        function showPosition(position) {
-          map.addMarker({lat: position.coords.latitude, lng: position.coords.longitude, zIndex: 99999 });
-          my_log = position.coords.latitude;
-          my_lng = position.coords.longitude;
-        }
-
-        getLocation();
 
       });
     </script>

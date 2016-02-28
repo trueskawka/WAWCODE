@@ -95,7 +95,7 @@ def extractData(fname, nn, opis, f):
 				#lonf = float(lon)
 
 				dataInsert = patternToi % (nn, lat, lon, disabledfriendly, momfriendly, prize, name, addr.replace("'",''), desc, ttype)
-				
+				f.write(dataInsert + "\n")
 				print dataInsert
 				
 				nn = nn + 1

@@ -38,19 +38,19 @@
         <div class="checkbox checkbox-slider--b-flat">
           <label>
             <input type="checkbox" id="przewijak">
-            <span>przewijak</span>
+            <span>tylko z przewijakiem</span>
           </label>
         </div>
         <div class="checkbox checkbox-slider--b-flat">
           <label>
             <input type="checkbox" id="disabled">
-            <span>przystosowana dla niepełnosprawnych</span>
+            <span>tylko przystosowane dla niepełnosprawnych</span>
           </label>
         </div>
         <div class="checkbox checkbox-slider--b-flat">
           <label>
             <input type="checkbox" id="free">
-            <span>bezpłatna</span>
+            <span>tylko bezpłatne</span>
           </label>
         </div>
         <div class="facility-type" style="padding-right: 10px; display: inline-block">
@@ -109,7 +109,7 @@
       <% @toilets.each do |toilet| %>
       <div class="invisible toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>" name="<%= toilet.name %>"
         disabledfriendly="<%=toilet.disabledfriendly%>" momfriendly="<%=toilet.momfriendly%>" price="<%=toilet.prize%>"
-        type="<%= toilet.toilettype %>"></div>
+        type="<%= toilet.toilettype %>" address="<%= toilet.adress %>"></div>
       <% end %>
 
     </div>
@@ -124,6 +124,7 @@
     <!-- Temporary -->
     <script>
       $(document).ready(function() {
+        var gMarkers_disabled = [], gMarkers_mom = [], gMarkers_free=[];
 
         var my_lat;
         var my_long;
@@ -199,7 +200,7 @@
         };
 
         var marker_icon_cafe = {
-          url: 'rest-icon.png',
+          url: 'cafe-icon.png',
           size: new google.maps.Size(30, 49),
           origin: new google.maps.Point(0, 0),
           anchor: new google.maps.Point(15, 35),
@@ -233,60 +234,161 @@
         }
 
         $(".toilet").each(function() {
-          var marker;
+          var marker_icon;
 
           switch($(this).attr("type")) {
             case 'toilets':
-              marker = marker_icon_toilet;
+              marker_icon = marker_icon_toilet;
               break;
 
             case 'cafe':
-              marker = marker_icon_cafe;
+              marker_icon = marker_icon_cafe;
               break;
 
             case 'pub':
-              marker = marker_icon_rest;
+              marker_icon = marker_icon_rest;
               break;
 
             case 'restaurant':
-              marker = marker_icon_rest;
+              marker_icon = marker_icon_rest;
               break;
 
             case 'fast_food':
-              marker = marker_icon_mac;
+              marker_icon = marker_icon_mac;
               break;
 
             case 'mall':
-              marker = marker_icon_gall;
+              marker_icon = marker_icon_gall;
               break;
 
             case 'parking':
-              marker = marker_icon_park;
+              marker_icon = marker_icon_park;
               break;
 
             case 'subway':
-              marker = marker_icon_park;
+              marker_icon = marker_icon_park;
               break;
 
             case 'station':
-              marker = marker_icon_park;
+              marker_icon = marker_icon_park;
               break;
 
             default:
-              marker = marker_icon_toilet;
+              marker_icon = marker_icon_toilet;
               break;
           }
 
-          map.addMarker({
+          var marker = map.addMarker({
             lat: $(this).attr('data-lat'),
             lng: $(this).attr('data-lon'),
-            icon: marker,
-            title: 'toilet',
+            icon: marker_icon,
             click: drawRouteOnClick.bind(this),
             infoWindow: {
-              content: $(this).attr('name')
+              content: $(this).attr('name') + '<br>' + $(this).attr('address')
             }
-          })
+          });
+
+          if ($(this).attr('disabledfriendly') == 'false')  {
+            gMarkers_disabled.push(marker);
+          }
+
+          if ($(this).attr('momfriendly') == 'false') {
+            gMarkers_mom.push(marker);
+          }
+
+          if ($(this).attr('price')!=0) {
+            gMarkers_free.push(marker);
+          }
+
+        });
+
+        $("#disabled").change(
+          function(){
+            if (this.checked) {
+              map.removeMarkers(gMarkers_disabled);
+            } else {
+              if ($("#free").is(":checked") && $("#przewijak").is(":checked")) {
+                var disf = $(gMarkers_disabled).not(gMarkers_free).get();
+                var disfm = $(disf).not(gMarkers_mom).get();
+                console.log(disfm);
+                $.each(disfm, function(index, obj){
+                  var marker = map.addMarker(obj);
+                });
+              } else if ($("#free").is(":checked")) {
+                var disf = $(gMarkers_disabled).not(gMarkers_free).get();
+                $.each(disf, function(index, obj){
+                  var marker = map.addMarker(obj);
+                });
+              } else if ($("#przewijak").is(":checked")) {
+                var dism = $(gMarkers_disabled).not(gMarkers_mom).get();
+                $.each(dism, function(index, obj){
+                  var marker = map.addMarker(obj);
+                });
+              } else {
+              $.each(gMarkers_disabled, function(index, obj){
+                var marker = map.addMarker(obj);
+              });
+            }
+            }
+        });
+
+        $("#free").change(
+          function(){
+            if (this.checked) {
+              map.removeMarkers(gMarkers_free);
+            } else {
+              if ($("#disabled").is(":checked") && $("#przewijak").is(":checked")) {
+                var disd = $(gMarkers_free).not(gMarkers_disabled).get();
+                var disdm = $(disd).not(gMarkers_mom).get();
+                $.each(disdm, function(index, obj){
+                  var marker = map.addMarker(obj);
+                });
+              } else if ($("#disabled").is(":checked")) {
+                var disd = $(gMarkers_free).not(gMarkers_disabled).get();
+                $.each(disd, function(index, obj){
+                  var marker = map.addMarker(obj);
+                });
+              } else if ($("#przewijak").is(":checked")) {
+                var dism = $(gMarkers_free).not(gMarkers_mom).get();
+                $.each(dism, function(index, obj){
+                  var marker = map.addMarker(obj);
+                });
+              } else {
+              $.each(gMarkers_free, function(index, obj){
+                var marker = map.addMarker(obj);
+              });
+            }
+            }
+        });
+
+        $("#przewijak").change(
+          function(){
+            if (this.checked) {
+              map.removeMarkers(gMarkers_mom);
+
+            } else {
+              if ($("#disabled").is(":checked") && $("#free").is(":checked")) {
+                var disd = $(gMarkers_mom).not(gMarkers_disabled).get();
+                var disdf = $(disd).not(gMarkers_free).get();
+                $.each(disdf, function(index, obj){
+                  var marker = map.addMarker(obj);
+                });
+              } else if ($("#disabled").is(":checked")) {
+                var disd = $(gMarkers_mom).not(gMarkers_disabled).get();
+                $.each(disd, function(index, obj){
+                  var marker = map.addMarker(obj);
+                });
+              } else if ($("#free").is(":checked")) {
+                var disf = $(gMarkers_mom).not(gMarkers_free).get();
+                $.each(disf, function(index, obj){
+                  var marker = map.addMarker(obj);
+                });
+              } else {
+              $.each(gMarkers_mom, function(index, obj){
+                var marker = map.addMarker(obj);
+              });
+            }
+            }
         });
 
         function error(err) {

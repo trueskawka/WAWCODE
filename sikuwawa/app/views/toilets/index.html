@@ -90,23 +90,22 @@
 
       </div>
       <div class="navbar navbar-default navbar-static-top">
-        opcje wyszukiwania
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-header">
+        <a class="navbar-brand" href="#">SIKUWAW</a>
+        opcje wyszukiwania <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-header">
           ☰
         </button>
-        <a class="navbar-brand" href="#">SIKUWAWA</a>
       </div>
 
       <div class="panel" id="quicksearch">
         <div class="row">
           <div class="col-xs-4">
-            <button type='button' class='btn btn-block btn-primary' style="white-space:normal;">Znajdz najblizszy</button>
+            <button type='button' class='btn btn-info btn-block' style="white-space:normal;">Znajdz najblizszy</button>
           </div>
           <div class="col-xs-4">
-            <button type='button' class='btn btn-block btn-primary' style="white-space:normal;">Znajdz bezplatny</button>
+            <button type='button' class='btn btn-info btn-block' style="white-space:normal;">Znajdz bezplatny</button>
           </div>
           <div class="col-xs-4">
-            <button type='button' class='btn btn-block btn-primary' style="white-space:normal;">Najlepiej Oceniony</button>
+            <button type='button' class='btn btn-info btn-block' style="white-space:normal;">Najlepiej Oceniony</button>
           </div>
         </div>
       </div>
@@ -238,7 +237,7 @@
             travelMode: 'walking',
             step: function(e) {
               $('#instructions').append('<li>' + e.instructions + '</li>');
-              $('#instructions li:eq(' + e.step_number + ')').delay(450 * e.step_number).fadeIn(200, function() {
+              $('#instructions li:eq(' + e.step_number + ')').delay(1000 * e.step_number).fadeIn(200, function() {
                 map.drawPolyline({path: e.path, strokeColor: '#131540', strokeOpacity: 0.6, strokeWeight: 6});
               });
             }

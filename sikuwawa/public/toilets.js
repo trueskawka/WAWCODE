@@ -2,6 +2,7 @@ var Toilets = function() {
   var map;
 
   var my_mark;
+
   var my_lat;
   var my_long;
   var dst_lat;
@@ -55,11 +56,7 @@ var Toilets = function() {
   }
 
   function drawUserMark() {
-    my_mark = map.addMarker({
-      lat: my_lat,
-      lng: my_long,
-      zIndex: 99999
-    });
+    my_mark.setPosition(new google.maps.LatLng(my_lat, my_long));
   }
 
   function drawRoute() {
@@ -133,6 +130,11 @@ var Toilets = function() {
 
   is_travelling = false;
   initMap();
+  my_mark =  map.addMarker({
+    lat: 0,
+    lng: 0,
+    zIndex: 99999
+  });
   locateUser();
 
   var marker_icon_toilet = {

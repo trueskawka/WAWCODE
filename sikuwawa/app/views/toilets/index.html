@@ -53,29 +53,39 @@
           </label>
         </div>
         <div class="facility-type" style="padding-right: 10px; display: inline-block">
-          <input type="checkbox" id="free" checked>
+          <input type="checkbox" id="toitoi" checked>
           <span>
             toi toi</span>
         </div>
         <div class="facility-type" style="padding-right: 10px; display: inline-block">
-          <input type="checkbox" id="free" checked>
+          <input type="checkbox" id="cafe" checked>
           <span>
             kawiarnie</span>
         </div>
+        <div class="facility-type" style="padding-right: 10px; display: inline-block">
+          <input type="checkbox" id="rest" checked>
+          <span>
+            restauracje</span>
+        </div>
         <div class="facility-type" style="padding-right: 10px;  display: inline-block">
-          <input type="checkbox" id="free" checked>
+          <input type="checkbox" id="mac" checked>
           <span>
             McDonald's</span>
         </div>
         <div class="facility-type" style="padding-right: 10px; display: inline-block">
-          <input type="checkbox" id="free" checked>
+          <input type="checkbox" id="parkride" checked>
           <span>
             parkuj i jedź</span>
         </div>
         <div class="facility-type" style="padding-right: 10px; display: inline-block">
-          <input type="checkbox" id="free" checked>
+          <input type="checkbox" id="stops" checked>
           <span>
             przystanki</span>
+        </div>
+        <div class="facility-type" style="padding-right: 10px; display: inline-block">
+          <input type="checkbox" id="malls" checked>
+          <span>
+            galerie handlowe</span>
         </div>
 
       </div>
@@ -132,6 +142,7 @@
     <script>
       $(document).ready(function() {
         var gMarkers_disabled = [], gMarkers_mom = [], gMarkers_free=[];
+        var toitoi = [], cafe = [], mac = [], parkride = [], stops = [], rest = [], malls = [];
 
         var my_lat;
         var my_long;
@@ -249,9 +260,6 @@
               break;
 
             case 'pub':
-              marker_icon = marker_icon_rest;
-              break;
-
             case 'restaurant':
               marker_icon = marker_icon_rest;
               break;
@@ -265,13 +273,7 @@
               break;
 
             case 'parking':
-              marker_icon = marker_icon_park;
-              break;
-
             case 'subway':
-              marker_icon = marker_icon_park;
-              break;
-
             case 'station':
               marker_icon = marker_icon_park;
               break;
@@ -301,6 +303,38 @@
 
           if ($(this).attr('price')!=0) {
             gMarkers_free.push(marker);
+          }
+
+          switch($(this).attr('type')) {
+            case 'toilets':
+              toitoi.push(marker);
+              break;
+
+            case 'cafe':
+              cafe.push(marker);
+              break;
+
+            case 'pub':
+            case 'restaurant':
+              rest.push(marker);
+              break;
+
+            case 'fast_food':
+              mac.push(marker);
+              break;
+
+            case 'parking':
+              parkride.push(marker);
+              break;
+
+            case 'subway':
+            case 'station':
+              stops.push(marker);
+              break;
+
+            case 'mall':
+              malls.push(marker);
+              break;
           }
 
         });
@@ -393,6 +427,83 @@
             }
             }
         });
+
+        $("#mac").change(
+          function(){
+            if (!this.checked) {
+              map.removeMarkers(mac);
+            } else {
+              $.each(mac, function(index, obj){
+                var marker = map.addMarker(obj);
+              });
+            }
+          });
+
+        $("#rest").change(
+          function(){
+            if (!this.checked) {
+              map.removeMarkers(rest);
+            } else {
+              $.each(rest, function(index, obj){
+                var marker = map.addMarker(obj);
+              });
+            }
+          });
+
+        $("#toitoi").change(
+          function(){
+            if (!this.checked) {
+              map.removeMarkers(toitoi);
+            } else {
+              $.each(toitoi, function(index, obj){
+                var marker = map.addMarker(obj);
+              });
+            }
+          });
+
+        $("#cafe").change(
+          function(){
+            if (!this.checked) {
+              map.removeMarkers(cafe);
+            } else {
+              $.each(cafe, function(index, obj){
+                var marker = map.addMarker(obj);
+              });
+            }
+          });
+
+        $("#parkride").change(
+          function(){
+            if (!this.checked) {
+              map.removeMarkers(parkride);
+            } else {
+              $.each(parkride, function(index, obj){
+                var marker = map.addMarker(obj);
+              });
+            }
+          });
+
+        $("#stops").change(
+          function(){
+            if (!this.checked) {
+              map.removeMarkers(stops);
+            } else {
+              $.each(stops, function(index, obj){
+                var marker = map.addMarker(obj);
+              });
+            }
+          });
+
+        $("#malls").change(
+          function(){
+            if (!this.checked) {
+              map.removeMarkers(malls);
+            } else {
+              $.each(malls, function(index, obj){
+                var marker = map.addMarker(obj);
+              });
+            }
+          });
 
         function error(err) {
           console.warn('ERROR(' + err.code + '): ' + err.message);

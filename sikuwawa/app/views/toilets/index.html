@@ -88,17 +88,15 @@
       </div>
 
       <div class="panel" id="quicksearch">
-        <div class="container">
-          <div class="row">
-            <div class="col-xs-4">
-              <button type='button' class='btn btn-default btn-block'>Znajdz najblizszy</button>
-            </div>
-            <div class="col-xs-4">
-              <button type='button' class='btn btn-default btn-block'>Znajdz bezplatny</button>
-            </div>
-            <div class="col-xs-4">
-              <button type='button' class='btn btn-default btn-block'>Znajdz Najlepiej Oceniony</button>
-            </div>
+        <div class="row">
+          <div class="col-xs-4">
+            <button type='button' class='btn btn-block btn-primary' style="white-space:normal;">Znajdz najblizszy</button>
+          </div>
+          <div class="col-xs-4">
+            <button type='button' class='btn btn-block btn-primary' style="white-space:normal;">Znajdz bezplatny</button>
+          </div>
+          <div class="col-xs-4">
+            <button type='button' class='btn btn-block btn-primary' style="white-space:normal;">Najlepiej Oceniony</button>
           </div>
         </div>
       </div>
@@ -107,19 +105,19 @@
         <div class="panel-body">
           <div id="instructions" style="max-height:250px; width:100%; overflow:auto; clear:both;"></div>
           <button type='button' class='btn btn-danger btn-block'>Anuluj</button>
-
         </div>
       </div>
 
+      <br>
       <div id="map"></div>
 
       <% @toilets.each do |toilet| %>
-      <div class="invisible toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>" name="<%= toilet.name %>"
-        disabledfriendly="<%=toilet.disabledfriendly%>" momfriendly="<%=toilet.momfriendly%>" price="<%=toilet.prize%>"
-        type="<%= toilet.toilettype %>" address="<%= toilet.adress %>"></div>
+      <div class="invisible toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>" name="<%= toilet.name %>" disabledfriendly="<%=toilet.disabledfriendly%>" momfriendly="<%=toilet.momfriendly%>" price="<%=toilet.prize%>" type="<%= toilet.toilettype %>" address="<%= toilet.adress %>"></div>
       <% end %>
 
     </div>
+
+    <script src="https://www.atlasestateagents.co.uk/javascript/tether.min.js"></script>
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"></script>
@@ -131,7 +129,9 @@
     <!-- Temporary -->
     <script>
       $(document).ready(function() {
-        var gMarkers_disabled = [], gMarkers_mom = [], gMarkers_free=[];
+        var gMarkers_disabled = [],
+          gMarkers_mom = [],
+          gMarkers_free = [];
 
         var my_lat;
         var my_long;
@@ -291,7 +291,7 @@
             }
           });
 
-          if ($(this).attr('disabledfriendly') == 'false')  {
+          if ($(this).attr('disabledfriendly') == 'false') {
             gMarkers_disabled.push(marker);
           }
 
@@ -299,99 +299,96 @@
             gMarkers_mom.push(marker);
           }
 
-          if ($(this).attr('price')!=0) {
+          if ($(this).attr('price') != 0) {
             gMarkers_free.push(marker);
           }
 
         });
 
-        $("#disabled").change(
-          function(){
-            if (this.checked) {
-              map.removeMarkers(gMarkers_disabled);
+        $("#disabled").change(function() {
+          if (this.checked) {
+            map.removeMarkers(gMarkers_disabled);
+          } else {
+            if ($("#free").is(":checked") && $("#przewijak").is(":checked")) {
+              var disf = $(gMarkers_disabled).not(gMarkers_free).get();
+              var disfm = $(disf).not(gMarkers_mom).get();
+              console.log(disfm);
+              $.each(disfm, function(index, obj) {
+                var marker = map.addMarker(obj);
+              });
+            } else if ($("#free").is(":checked")) {
+              var disf = $(gMarkers_disabled).not(gMarkers_free).get();
+              $.each(disf, function(index, obj) {
+                var marker = map.addMarker(obj);
+              });
+            } else if ($("#przewijak").is(":checked")) {
+              var dism = $(gMarkers_disabled).not(gMarkers_mom).get();
+              $.each(dism, function(index, obj) {
+                var marker = map.addMarker(obj);
+              });
             } else {
-              if ($("#free").is(":checked") && $("#przewijak").is(":checked")) {
-                var disf = $(gMarkers_disabled).not(gMarkers_free).get();
-                var disfm = $(disf).not(gMarkers_mom).get();
-                console.log(disfm);
-                $.each(disfm, function(index, obj){
-                  var marker = map.addMarker(obj);
-                });
-              } else if ($("#free").is(":checked")) {
-                var disf = $(gMarkers_disabled).not(gMarkers_free).get();
-                $.each(disf, function(index, obj){
-                  var marker = map.addMarker(obj);
-                });
-              } else if ($("#przewijak").is(":checked")) {
-                var dism = $(gMarkers_disabled).not(gMarkers_mom).get();
-                $.each(dism, function(index, obj){
-                  var marker = map.addMarker(obj);
-                });
-              } else {
-              $.each(gMarkers_disabled, function(index, obj){
+              $.each(gMarkers_disabled, function(index, obj) {
                 var marker = map.addMarker(obj);
               });
             }
-            }
+          }
         });
 
-        $("#free").change(
-          function(){
-            if (this.checked) {
-              map.removeMarkers(gMarkers_free);
+        $("#free").change(function() {
+          if (this.checked) {
+            map.removeMarkers(gMarkers_free);
+          } else {
+            if ($("#disabled").is(":checked") && $("#przewijak").is(":checked")) {
+              var disd = $(gMarkers_free).not(gMarkers_disabled).get();
+              var disdm = $(disd).not(gMarkers_mom).get();
+              $.each(disdm, function(index, obj) {
+                var marker = map.addMarker(obj);
+              });
+            } else if ($("#disabled").is(":checked")) {
+              var disd = $(gMarkers_free).not(gMarkers_disabled).get();
+              $.each(disd, function(index, obj) {
+                var marker = map.addMarker(obj);
+              });
+            } else if ($("#przewijak").is(":checked")) {
+              var dism = $(gMarkers_free).not(gMarkers_mom).get();
+              $.each(dism, function(index, obj) {
+                var marker = map.addMarker(obj);
+              });
             } else {
-              if ($("#disabled").is(":checked") && $("#przewijak").is(":checked")) {
-                var disd = $(gMarkers_free).not(gMarkers_disabled).get();
-                var disdm = $(disd).not(gMarkers_mom).get();
-                $.each(disdm, function(index, obj){
-                  var marker = map.addMarker(obj);
-                });
-              } else if ($("#disabled").is(":checked")) {
-                var disd = $(gMarkers_free).not(gMarkers_disabled).get();
-                $.each(disd, function(index, obj){
-                  var marker = map.addMarker(obj);
-                });
-              } else if ($("#przewijak").is(":checked")) {
-                var dism = $(gMarkers_free).not(gMarkers_mom).get();
-                $.each(dism, function(index, obj){
-                  var marker = map.addMarker(obj);
-                });
-              } else {
-              $.each(gMarkers_free, function(index, obj){
+              $.each(gMarkers_free, function(index, obj) {
                 var marker = map.addMarker(obj);
               });
             }
-            }
+          }
         });
 
-        $("#przewijak").change(
-          function(){
-            if (this.checked) {
-              map.removeMarkers(gMarkers_mom);
+        $("#przewijak").change(function() {
+          if (this.checked) {
+            map.removeMarkers(gMarkers_mom);
 
+          } else {
+            if ($("#disabled").is(":checked") && $("#free").is(":checked")) {
+              var disd = $(gMarkers_mom).not(gMarkers_disabled).get();
+              var disdf = $(disd).not(gMarkers_free).get();
+              $.each(disdf, function(index, obj) {
+                var marker = map.addMarker(obj);
+              });
+            } else if ($("#disabled").is(":checked")) {
+              var disd = $(gMarkers_mom).not(gMarkers_disabled).get();
+              $.each(disd, function(index, obj) {
+                var marker = map.addMarker(obj);
+              });
+            } else if ($("#free").is(":checked")) {
+              var disf = $(gMarkers_mom).not(gMarkers_free).get();
+              $.each(disf, function(index, obj) {
+                var marker = map.addMarker(obj);
+              });
             } else {
-              if ($("#disabled").is(":checked") && $("#free").is(":checked")) {
-                var disd = $(gMarkers_mom).not(gMarkers_disabled).get();
-                var disdf = $(disd).not(gMarkers_free).get();
-                $.each(disdf, function(index, obj){
-                  var marker = map.addMarker(obj);
-                });
-              } else if ($("#disabled").is(":checked")) {
-                var disd = $(gMarkers_mom).not(gMarkers_disabled).get();
-                $.each(disd, function(index, obj){
-                  var marker = map.addMarker(obj);
-                });
-              } else if ($("#free").is(":checked")) {
-                var disf = $(gMarkers_mom).not(gMarkers_free).get();
-                $.each(disf, function(index, obj){
-                  var marker = map.addMarker(obj);
-                });
-              } else {
-              $.each(gMarkers_mom, function(index, obj){
+              $.each(gMarkers_mom, function(index, obj) {
                 var marker = map.addMarker(obj);
               });
             }
-            }
+          }
         });
 
         function error(err) {
@@ -411,7 +408,7 @@
         }
 
         function showPosition(position) {
-          map.addMarker({lat: position.coords.latitude, lng: position.coords.longitude});
+          map.addMarker({lat: position.coords.latitude, lng: position.coords.longitude, zIndex: 99999 });
           my_log = position.coords.latitude;
           my_lng = position.coords.longitude;
         }

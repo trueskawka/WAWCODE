@@ -23,6 +23,19 @@
     <!--TiTaToggle-->
     <link rel="stylesheet" type="text/css" href="//cdn.sm.plus/bootstrap/titatoggle/1.2.8/titatoggle.min.css"/>
 
+    <style>
+
+      .infowindow {
+        width: 200px;
+      }
+
+      .hidden {
+        display: none !important;
+        visibility: hidden !important;
+      }
+
+    </style>
+
   </head>
 
   <body>
@@ -31,8 +44,8 @@
       <div class="collapse" id="navbar-header">
         <div class="inverse p-a">
           <p style="display: inline-block">Wyszukaj po adresie:</p>
-          <input placeholder="np. Ząbkowska" style="padding: 10px 3px; font-size: 12px">
-          <button class="btn btn-info">Szukaj</button>
+          <input placeholder="np. Ząbkowska" style="padding: 10px 3px; font-size: 12px" id="auto-input">
+          <button class="btn btn-info" id="search-button">Szukaj</button>
         </div>
         <div class="checkbox checkbox-slider--b-flat">
           <label>
@@ -97,24 +110,20 @@
         </button>
       </div>
 
-      <div class="panel" id="quicksearch">
+      <div class="panel hidden" id="navigationoptions">
+        <!-- OPIS TUTAJ -->
         <div class="row">
-          <div class="col-xs-4">
-            <button type='button' onClick="findNearest()" class='btn btn-info btn-block' style="white-space:normal;">Znajdz najblizszy</button>
+          <div class="col-xs-6">
+            <button type='button' id='show-instructions' class='btn btn-info btn-block' style="white-space:normal;">Pokaż wskazówki</button>
           </div>
-          <div class="col-xs-4">
-            <button type='button' onClick="findFreeOfCharge()" class='btn btn-info btn-block' style="white-space:normal;">Znajdz bezplatny</button>
-          </div>
-          <div class="col-xs-4">
-            <button type='button' onClick="findWithBestOpinons()" class='btn btn-info btn-block' style="white-space:normal;">Najlepiej Oceniony</button>
+          <div class="col-xs-6">
+            <button type='button' id='cancel-route' class='btn btn-info btn-block' style="white-space:normal;">Zakończ nawigację</button>
           </div>
         </div>
       </div>
-      <div class="panel panel-default" id="instructions-panel">
-        <div class="panel-heading">Wskazowki dojscia</div>
+      <div class="panel panel-default hidden" id="instructions-panel">
         <div class="panel-body">
-          <div id="instructions" style="max-height:250px; width:100%; overflow:auto; clear:both;"></div>
-          <button type='button' id="cancel-route" onclick="cancelRoute()" class='btn btn-danger btn-block'>Anuluj</button>
+          <div id="instructions" style="min-height: 175px; max-height:175px; width:100%; overflow:auto; clear:both;"></div>
         </div>
       </div>
 
@@ -122,7 +131,7 @@
       <div id="map"></div>
 
       <% @toilets.each do |toilet| %>
-      <div class="invisible toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>" name="<%= toilet.name %>" disabledfriendly="<%=toilet.disabledfriendly%>" momfriendly="<%=toilet.momfriendly%>" price="<%=toilet.prize%>" type="<%= toilet.toilettype %>" address="<%= toilet.adress %>"></div>
+      <div class="hidden toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>" name="<%= toilet.name %>" disabledfriendly="<%=toilet.disabledfriendly%>" momfriendly="<%=toilet.momfriendly%>" price="<%=toilet.prize%>" type="<%= toilet.toilettype %>" address="<%= toilet.adress %>"></div>
       <% end %>
 
     </div>
@@ -133,11 +142,12 @@
     <script src="https://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"></script>
 
     <!-- Maps -->
-    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true&amp;language=pl"></script>
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true&amp;language=pl&libraries=places"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.22/gmaps.min.js"></script>
 
     <!-- Temporary -->
     <script type="text/javascript" src="toilets.js"></script>
+
     <script>
       $(document).ready(function() {
         Toilets();

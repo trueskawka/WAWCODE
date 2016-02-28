@@ -44,8 +44,8 @@
       <div class="collapse" id="navbar-header">
         <div class="inverse p-a">
           <p style="display: inline-block">Wyszukaj po adresie:</p>
-          <input placeholder="np. Ząbkowska" style="padding: 10px 3px; font-size: 12px">
-          <button class="btn btn-info">Szukaj</button>
+          <input placeholder="np. Ząbkowska" style="padding: 10px 3px; font-size: 12px" id="auto-input">
+          <button class="btn btn-info" id="search-button">Szukaj</button>
         </div>
         <div class="checkbox checkbox-slider--b-flat">
           <label>
@@ -114,7 +114,7 @@
         <!-- OPIS TUTAJ -->
         <div class="row">
           <div class="col-xs-6">
-            <button type='button' id='toggle-instructions' class='btn btn-info btn-block' style="white-space:normal;">Pokaż wskazówki</button>
+            <button type='button' id='show-instructions' class='btn btn-info btn-block' style="white-space:normal;">Pokaż wskazówki</button>
           </div>
           <div class="col-xs-6">
             <button type='button' id='cancel-route' class='btn btn-info btn-block' style="white-space:normal;">Zakończ nawigację</button>
@@ -142,7 +142,7 @@
     <script src="https://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"></script>
 
     <!-- Maps -->
-    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true&amp;language=pl"></script>
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true&amp;language=pl&libraries=places"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.22/gmaps.min.js"></script>
 
     <!-- Temporary -->

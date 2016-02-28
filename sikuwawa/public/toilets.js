@@ -12,6 +12,38 @@ var Toilets = function() {
 
   var inf = new google.maps.InfoWindow();
 
+var input = document.getElementById('auto-input');
+var autocomplete = new google.maps.places.Autocomplete(input);
+google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+            my_lat = place.geometry.location.lat();
+            my_long = place.geometry.location.lng();
+        });
+
+function findNearest() {}
+
+function findFreeOfCharge() {}
+
+function findWithBestOpinions() {}
+
+function cancelRoute() {
+  map.cleanRoute();
+  $('#instructions').empty();
+  $('#instructions-panel').hide('fast', function() {});
+  $('#quicksearch').slideDown(200, function() {});
+
+  is_travelling = false;
+}
+
+$('#cancel-route').on("click", cancelRoute);
+
+function hideInstructions() {
+  $('#instructions').empty();
+  $('#instructions-panel').hide('fast', function() {});
+  $('#quicksearch').slideDown(200, function() {});
+}
+
+$('#hide-instructions').on("click", hideInstructions);
   var cancelRoute = function () {
     map.cleanRoute();
     $('#instructions').empty();

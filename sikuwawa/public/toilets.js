@@ -35,7 +35,7 @@ $('#hide-instructions').on("click", hideInstructions);
 
 
 function showInstructions() {
-
+  $('#instructions-panel').slideDown('fast', function() {});
 }
 
 $('#show-instructions').on("click", showInstructions);
@@ -74,9 +74,13 @@ function drawRoute() {
       ],
       travelMode: 'walking',
       step: function(e) {
+
+
         $('#instructions').append('<li>' + e.instructions + '</li>');
         $('#instructions li:eq(' + e.step_number + ')').delay(1 * e.step_number).fadeIn(200, function() {
           map.drawPolyline({path: e.path, strokeColor: '#131540', strokeOpacity: 0.6, strokeWeight: 6});
+
+
         });
       }
     });

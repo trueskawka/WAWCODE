@@ -435,6 +435,6 @@ var Toilets = function() {
     }
   });
 
-  setInterval(locateUser, 4000);
+  setInterval(locateUser, 8000);
 
 }

@@ -107,7 +107,9 @@
       <div id="map"></div>
 
       <% @toilets.each do |toilet| %>
-      <div class="invisible toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>" name="name"></div>
+      <div class="invisible toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>" name="<%= toilet.name %>"
+        disabledfriendly="<%=toilet.disabledfriendly%>" momfriendly="<%=toilet.momfriendly%>" price="<%=toilet.prize%>"
+        type="<%= toilet.toilettype %>"></div>
       <% end %>
 
     </div>
@@ -156,8 +158,48 @@
           always: function() {}
         });
 
-        var marker_icon = {
+        var marker_icon_toilet = {
           url: 'icon.png',
+          size: new google.maps.Size(30, 49),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(15, 35),
+          scaledSize: new google.maps.Size(30, 49)
+        };
+
+        var marker_icon_rest = {
+          url: 'rest-icon.png',
+          size: new google.maps.Size(30, 49),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(15, 35),
+          scaledSize: new google.maps.Size(30, 49)
+        };
+
+        var marker_icon_mac = {
+          url: 'mac-icon.png',
+          size: new google.maps.Size(30, 49),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(15, 35),
+          scaledSize: new google.maps.Size(30, 49)
+        };
+
+        var marker_icon_park = {
+          url: 'park-icon.png',
+          size: new google.maps.Size(30, 49),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(15, 35),
+          scaledSize: new google.maps.Size(30, 49)
+        };
+
+        var marker_icon_gall = {
+          url: 'gall-icon.png',
+          size: new google.maps.Size(30, 49),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(15, 35),
+          scaledSize: new google.maps.Size(30, 49)
+        };
+
+        var marker_icon_cafe = {
+          url: 'rest-icon.png',
           size: new google.maps.Size(30, 49),
           origin: new google.maps.Point(0, 0),
           anchor: new google.maps.Point(15, 35),
@@ -191,10 +233,54 @@
         }
 
         $(".toilet").each(function() {
+          var marker;
+
+          switch($(this).attr("type")) {
+            case 'toilets':
+              marker = marker_icon_toilet;
+              break;
+
+            case 'cafe':
+              marker = marker_icon_cafe;
+              break;
+
+            case 'pub':
+              marker = marker_icon_rest;
+              break;
+
+            case 'restaurant':
+              marker = marker_icon_rest;
+              break;
+
+            case 'fast_food':
+              marker = marker_icon_mac;
+              break;
+
+            case 'mall':
+              marker = marker_icon_gall;
+              break;
+
+            case 'parking':
+              marker = marker_icon_park;
+              break;
+
+            case 'subway':
+              marker = marker_icon_park;
+              break;
+
+            case 'station':
+              marker = marker_icon_park;
+              break;
+
+            default:
+              marker = marker_icon_toilet;
+              break;
+          }
+
           map.addMarker({
             lat: $(this).attr('data-lat'),
             lng: $(this).attr('data-lon'),
-            icon: marker_icon,
+            icon: marker,
             title: 'toilet',
             click: drawRouteOnClick.bind(this),
             infoWindow: {

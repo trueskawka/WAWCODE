@@ -186,7 +186,7 @@
       function drawRoute() {
         map.cleanRoute();
         if (is_travelling) {
-          alert("Cos sie popsulo");
+          $('#instructions').empty();
           map.travelRoute({
             origin: [
               my_lat, my_long

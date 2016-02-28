@@ -99,13 +99,13 @@
       <div class="panel" id="quicksearch">
         <div class="row">
           <div class="col-xs-4">
-            <button type='button' class='btn btn-info btn-block' style="white-space:normal;">Znajdz najblizszy</button>
+            <button type='button' onClick="findNearest()" class='btn btn-info btn-block' style="white-space:normal;">Znajdz najblizszy</button>
           </div>
           <div class="col-xs-4">
-            <button type='button' class='btn btn-info btn-block' style="white-space:normal;">Znajdz bezplatny</button>
+            <button type='button' onClick="findFreeOfCharge()" class='btn btn-info btn-block' style="white-space:normal;">Znajdz bezplatny</button>
           </div>
           <div class="col-xs-4">
-            <button type='button' class='btn btn-info btn-block' style="white-space:normal;">Najlepiej Oceniony</button>
+            <button type='button' onClick="findWithBestOpinons()" class='btn btn-info btn-block' style="white-space:normal;">Najlepiej Oceniony</button>
           </div>
         </div>
       </div>
@@ -137,6 +137,27 @@
 
     <!-- Temporary -->
     <script>
+      var map;
+
+      function findNearest() {
+
+      }
+
+      function findFreeOfCharge() {
+
+      }
+
+      function findWithBestOpinions() {
+
+      }
+
+      function cancelRoute() {
+        map.cleanRoute();
+        $('#instructions').empty();
+        $('#instructions-panel').hide('fast', function() {});
+        $('#quicksearch').slideDown(200, function() {});
+      }
+
       $(document).ready(function() {
         var gMarkers_disabled = [], gMarkers_mom = [], gMarkers_free=[];
         var toitoi = [], cafe = [], mac = [], parkride = [], stops = [], rest = [], malls = [];
@@ -145,7 +166,7 @@
         var my_long;
 
         $('#instructions-panel').hide();
-        var map = new GMaps({
+        map = new GMaps({
           el: '#map',
           lat: 52.14,
           lng: 21.0,
@@ -225,7 +246,7 @@
         var drawRouteOnClick = function() {
           map.cleanRoute();
           $('#instructions').empty();
-          $('#instructions-panel').slideDown(600, function() {});
+          $('#instructions-panel').slideDown(200, function() {});
           $('#quicksearch').hide('fast', function() {});
           map.travelRoute({
             origin: [
@@ -237,7 +258,7 @@
             travelMode: 'walking',
             step: function(e) {
               $('#instructions').append('<li>' + e.instructions + '</li>');
-              $('#instructions li:eq(' + e.step_number + ')').delay(1000 * e.step_number).fadeIn(200, function() {
+              $('#instructions li:eq(' + e.step_number + ')').delay(10 * e.step_number).fadeIn(200, function() {
                 map.drawPolyline({path: e.path, strokeColor: '#131540', strokeOpacity: 0.6, strokeWeight: 6});
               });
             }

@@ -7,6 +7,7 @@ var Toilets = function() {
   var dst_lat;
   var dst_long;
   var is_travelling = false;
+  var first_time = false;
 
   var inf = new google.maps.InfoWindow();
 
@@ -14,7 +15,7 @@ var Toilets = function() {
     map.cleanRoute();
     $('#instructions').empty();
     $('#instructions-panel').hide('fast', function() {});
-    $('#quicksearch').slideDown(200, function() {});
+    $('#navigationoptions').addClass('hidden');
 
     is_travelling = false;
   }
@@ -68,6 +69,7 @@ var Toilets = function() {
   function drawRoute() {
     map.cleanRoute();
     if (is_travelling) {
+      $('#navigationoptions').removeClass('hidden');
       $('#instructions').removeClass('hidden');
       $('#instructions').empty();
       map.travelRoute({
@@ -101,7 +103,10 @@ var Toilets = function() {
   function locateUser() {
     GMaps.geolocate({
       success: function(position) {
-        map.setCenter(position.coords.latitude, position.coords.longitude);
+        if (first_time) {
+          map.setCenter(position.coords.latitude, position.coords.longitude);
+          first_time = false;
+        }
         my_lat = position.coords.latitude;
         my_long = position.coords.longitude;
 
@@ -182,39 +187,9 @@ var Toilets = function() {
     scaledSize: new google.maps.Size(30, 49)
   };
 
-  var drawRouteOnClick = function() {
-    $('#navigationoptions').removeClass('hidden');
-
-    map.cleanRoute();
-    $('#instructions').empty();
-    $('#instructions-panel').slideDown(200, function() {});
-    $('#quicksearch').hide('fast', function() {});
-    map.travelRoute({
-      origin: [
-        my_lat, my_long
-      ],
-      destination: [
-        $(this).attr('data-lat'), $(this).attr('data-lon')
-      ],
-      travelMode: 'walking',
-      step: function(e) {
-        $('#instructions').append('<li>' + e.instructions + '</li>');
-        $('#instructions li:eq(' + e.step_number + ')').delay(10 * e.step_number).fadeIn(200, function() {
-          map.drawPolyline({
-            path: e.path,
-            strokeColor: '#131540',
-            strokeOpacity: 0.6,
-            strokeWeight: 6
-          });
-        });
-      }
-    });
-  }
-
   function navigateClick() {
-    alert(dst_lat);
     is_travelling = true;
-    map.cleanRoute();
+    drawRoute();
     $('#instructions').empty();
     $('#instructions-panel').slideDown(200, function() {});
   }
@@ -267,7 +242,6 @@ var Toilets = function() {
     var assigner = function() {
       dst_lat = $(this).attr('data-lat');
       dst_long = $(this).attr('data-lon');
-      alert(dst_long);
     }
 
     var marker = map.addMarker({

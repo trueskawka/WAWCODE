@@ -12,17 +12,16 @@
     <title>Navbar Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="http://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="http://v4-alpha.getbootstrap.com/examples/navbar/navbar.css" rel="stylesheet">
+    <link href="https://v4-alpha.getbootstrap.com/examples/navbar/navbar.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="http://v4-alpha.getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="https://v4-alpha.getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
 
     <!--TiTaToggle-->
     <link rel="stylesheet" type="text/css" href="//cdn.sm.plus/bootstrap/titatoggle/1.2.8/titatoggle.min.css"/>
-
 
   </head>
 
@@ -103,19 +102,25 @@
           </div>
         </div>
       </div>
-      <div id="instructions" style="height:250px; width:100%; overflow:auto; clear:both;"></div>
+      <div class="panel panel-default" id="instructions-panel">
+        <div class="panel-heading">Wskazowki dojscia</div>
+        <div class="panel-body">
+          <div id="instructions" style="height:250px; width:100%; overflow:auto; clear:both;"></div>
+          <button type='button' class='btn btn-danger btn-block'>Anuluj</button>
+
+        </div>
+      </div>
+
       <div id="map"></div>
 
       <% @toilets.each do |toilet| %>
-      <div class="invisible toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>" name="<%= toilet.name %>"
-        disabledfriendly="<%=toilet.disabledfriendly%>" momfriendly="<%=toilet.momfriendly%>" price="<%=toilet.prize%>"
-        type="<%= toilet.toilettype %>"></div>
+      <div class="invisible toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>" name="<%= toilet.name %>" disabledfriendly="<%=toilet.disabledfriendly%>" momfriendly="<%=toilet.momfriendly%>" price="<%=toilet.prize%>" type="<%= toilet.toilettype %>"></div>
       <% end %>
 
     </div>
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="http://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"></script>
+    <script src="https://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"></script>
 
     <!-- Maps -->
     <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true&amp;language=pl"></script>
@@ -128,7 +133,7 @@
         var my_lat;
         var my_long;
 
-        $('#instructions').hide();
+        $('#instructions-panel').hide();
         var map = new GMaps({
           el: '#map',
           lat: 52.14,
@@ -209,12 +214,8 @@
         var drawRouteOnClick = function() {
           map.cleanRoute();
           $('#instructions').empty();
-          $('#instructions').slideDown(600, function() {
-
-          });
-          $('#quicksearch').hide('fast', function() {
-
-          });
+          $('#instructions-panel').slideDown(600, function() {});
+          $('#quicksearch').hide('fast', function() {});
           map.travelRoute({
             origin: [
               my_lat, my_long
@@ -235,7 +236,7 @@
         $(".toilet").each(function() {
           var marker;
 
-          switch($(this).attr("type")) {
+          switch ($(this).attr("type")) {
             case 'toilets':
               marker = marker_icon_toilet;
               break;

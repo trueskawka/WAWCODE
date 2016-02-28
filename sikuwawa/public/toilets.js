@@ -39,12 +39,8 @@ function showInstructions() {
 }
 
 $('#show-instructions').on("click", showInstructions);
-$('.navigationoptions').removeClass('hidden');
-$('.navigate').on("click", function() {
-  $('.navigationoptions').removeClass('hidden');
-});
+
 function initMap() {
-  $('#instructions-panel').hide();
   map = new GMaps({
     el: '#map',
     lat: 52.14,
@@ -67,6 +63,7 @@ function drawUserMark() {
 function drawRoute() {
   map.cleanRoute();
   if (is_travelling) {
+    $('#instructions').removeClass('hidden');
     $('#instructions').empty();
     map.travelRoute({
       origin: [
@@ -239,19 +236,32 @@ $(".toilet").each(function() {
       break;
   }
 
+  var contentString = '<div class="infowindow">'+
+  $(this).attr('name') + '<br>' +
+  $(this).attr('address') +
+  '<br><button type="button" class="btn btn-success btn-sm navigate" id="navigate">Nawiguj</button></div>';
+
+  var infoWindow = new google.maps.InfoWindow({
+    content: contentString
+  });
+
   var marker = map.addMarker({
     lat: $(this).attr('data-lat'),
     lng: $(this).attr('data-lon'),
     icon: marker_icon,
-    click: markerClick.bind(this),
+    click: markerClick.bind(this)
     /*drawRouteOnClick.bind(this),*/
-    infoWindow: {
-      content: '<div class="infowindow">'+
-      $(this).attr('name') + '<br>' +
-      $(this).attr('address') +
-      '<br><button type="button" class="btn btn-success btn-sm" id="navigate">Nawiguj</button></div>'
-    }
   });
+
+  marker.addListener('click', function() {
+    infoWindow.open(marker.map, marker);
+  });
+
+  google.maps.event.addListenerOnce(infoWindow, 'domready', function() {
+    $("#navigate" ).click( function() {
+        $('#navigationoptions').removeClass('hidden');
+    });
+});
 
   if ($(this).attr('disabledfriendly') == 'false') {
     gMarkers_disabled.push(marker);

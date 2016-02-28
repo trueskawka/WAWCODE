@@ -7,7 +7,7 @@ import time
 from codecs import open
 from xml.dom import minidom
 
-dbname = "dev.sqlite3"
+dbname = "dev2.sqlite3"
 
 initial = """Toilet.destroy_all
 """
@@ -32,6 +32,20 @@ types =[
 ]
 
 forbidden = ['bus_stop', 'bicycle_rental', 'tram_stop', 'information', 'yes', 'bicycle_parking']
+
+schema = """CREATE TABLE "toilets" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "lat" float, "lon" float, "disabledfriendly" boolean, "momfriendly" boolean, "prize" float, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "name" varchar, "adress" text, "desc" text, "toilettype" varchar);"""
+
+def createDB(conn):
+	try:
+		conn.execute("""DROP TABLE "toilets";""")
+		conn.commit()
+	except:
+		pass
+	conn.execute(schema)
+	conn.commit()
+
+
+
 
 def toBoolean(num):
 	if num == 0:
@@ -73,12 +87,16 @@ def extractDataAndLoad(fname, opis, conn):
 
 				dataInsert = patternToiDB % (latf, lonf, disabledfriendly, momfriendly, prize, created_at, updated_at, name, addr.replace("'",''), desc, ttype)
 				print dataInsert
+				conn.execute(dataInsert)
+				conn.commit()
+				print "\t ... commited!"
 	return None
 
 
 if __name__ == "__main__":
 	conn = sqlite3.connect(dbname)
 	try:
+		createDB(conn)
 		for tt in types:
 			(mm,opis) = tt
 			pattern = "%s_*.xml" % (mm)

@@ -23,6 +23,17 @@
     <!--TiTaToggle-->
     <link rel="stylesheet" type="text/css" href="//cdn.sm.plus/bootstrap/titatoggle/1.2.8/titatoggle.min.css"/>
 
+    <style>
+      .infowindow {
+        width: 200px;
+      }
+
+      .hidden {
+        display: none !important;
+        visibility: hidden !important;
+      }
+    </style>
+
   </head>
 
   <body>
@@ -110,11 +121,11 @@
           </div>
         </div>
       </div>
-      <div class="panel panel-default" id="instructions-panel">
+      <div class="panel panel-default hidden" id="instructions-panel">
         <div class="panel-heading">Wskazowki dojscia</div>
         <div class="panel-body">
           <div id="instructions" style="max-height:250px; width:100%; overflow:auto; clear:both;"></div>
-          <button type='button' id="cancel-route" onclick="cancelRoute()" class='btn btn-danger btn-block'>Anuluj</button>
+          <button type='button' id="cancel-route" onclick="cancelRoute()" class='btn btn-danger btn-block hidden'>Anuluj</button>
         </div>
       </div>
 
@@ -122,7 +133,7 @@
       <div id="map"></div>
 
       <% @toilets.each do |toilet| %>
-      <div class="invisible toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>" name="<%= toilet.name %>" disabledfriendly="<%=toilet.disabledfriendly%>" momfriendly="<%=toilet.momfriendly%>" price="<%=toilet.prize%>" type="<%= toilet.toilettype %>" address="<%= toilet.adress %>"></div>
+      <div class="hidden toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>" name="<%= toilet.name %>" disabledfriendly="<%=toilet.disabledfriendly%>" momfriendly="<%=toilet.momfriendly%>" price="<%=toilet.prize%>" type="<%= toilet.toilettype %>" address="<%= toilet.adress %>"></div>
       <% end %>
 
     </div>
@@ -138,6 +149,7 @@
 
     <!-- Temporary -->
     <script type="text/javascript" src="toilets.js"></script>
+
     <script>
       $(document).ready(function() {
         Toilets();

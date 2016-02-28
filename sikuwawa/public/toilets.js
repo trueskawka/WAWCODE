@@ -25,6 +25,24 @@ function cancelRoute() {
 
 $('#cancel-route').on("click", cancelRoute);
 
+function hideInstructions() {
+  $('#instructions').empty();
+  $('#instructions-panel').hide('fast', function() {});
+  $('#quicksearch').slideDown(200, function() {});
+}
+
+$('#hide-instructions').on("click", hideInstructions);
+
+
+function showInstructions() {
+
+}
+
+$('#show-instructions').on("click", showInstructions);
+$('.navigationoptions').removeClass('hidden');
+$('.navigate').on("click", function() {
+  $('.navigationoptions').removeClass('hidden');
+});
 function initMap() {
   $('#instructions-panel').hide();
   map = new GMaps({
@@ -230,7 +248,7 @@ $(".toilet").each(function() {
     click: markerClick.bind(this),
     /*drawRouteOnClick.bind(this),*/
     infoWindow: {
-      content: $(this).attr('name') + '<br>' + $(this).attr('address')
+      content: $(this).attr('name') + '<br>' + $(this).attr('address') + '<br><button type="button" class="btn btn-success navigate">Nawiguj</button>'
     }
   });
 

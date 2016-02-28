@@ -23,6 +23,13 @@
     <!--TiTaToggle-->
     <link rel="stylesheet" type="text/css" href="//cdn.sm.plus/bootstrap/titatoggle/1.2.8/titatoggle.min.css"/>
 
+    <style>
+      .hidden {
+        display: none !important;
+        visibility: hidden !important;
+      }
+
+    </style>
   </head>
 
   <body>
@@ -97,24 +104,38 @@
         </button>
       </div>
 
-      <div class="panel" id="quicksearch">
+      <div class="panel hidden" id="quicksearch">
         <div class="row">
           <div class="col-xs-4">
-            <button type='button' onClick="findNearest()" class='btn btn-info btn-block' style="white-space:normal;">Znajdz najblizszy</button>
+            <button type='button' class='btn btn-info btn-block' style="white-space:normal;">Znajdz najblizszy</button>
           </div>
           <div class="col-xs-4">
-            <button type='button' onClick="findFreeOfCharge()" class='btn btn-info btn-block' style="white-space:normal;">Znajdz bezplatny</button>
+            <button type='button' class='btn btn-info btn-block' style="white-space:normal;">Znajdz bezplatny</button>
           </div>
           <div class="col-xs-4">
-            <button type='button' onClick="findWithBestOpinons()" class='btn btn-info btn-block' style="white-space:normal;">Najlepiej Oceniony</button>
+            <button type='button' class='btn btn-info btn-block' style="white-space:normal;">Wycentruj mape</button>
           </div>
         </div>
       </div>
-      <div class="panel panel-default" id="instructions-panel">
+      <div class="panel hidden" id="navigationoptions">
+        <!-- OPIS TUTAJ -->
+        <div class="row">
+          <div class="col-xs-4">
+            <button type='button' class='btn btn-default btn-block' style="white-space:normal;">Pokaz wskazowki</button>
+          </div>
+          <div class="col-xs-4">
+            <button type='button' class='btn btn-default btn-block' style="white-space:normal;">Usun trase</button>
+          </div>
+          <div class="col-xs-4">
+            <button type='button' class='btn btn-info btn-block' style="white-space:normal;">Wycentruj mape</button>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default hidden" id="instructions-panel">
         <div class="panel-heading">Wskazowki dojscia</div>
         <div class="panel-body">
           <div id="instructions" style="max-height:250px; width:100%; overflow:auto; clear:both;"></div>
-          <button type='button' id="cancel-route" class='btn btn-danger btn-block'>Anuluj</button>
+          <button type='button' id="hide-instructions" class='btn btn-danger btn-block'>Schowaj wskazowki</button>
         </div>
       </div>
 

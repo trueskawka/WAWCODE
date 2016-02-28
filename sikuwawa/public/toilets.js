@@ -239,8 +239,6 @@ $(".toilet").each(function() {
       break;
   }
 
-
-
   var marker = map.addMarker({
     lat: $(this).attr('data-lat'),
     lng: $(this).attr('data-lon'),
@@ -248,7 +246,10 @@ $(".toilet").each(function() {
     click: markerClick.bind(this),
     /*drawRouteOnClick.bind(this),*/
     infoWindow: {
-      content: $(this).attr('name') + '<br>' + $(this).attr('address') + '<br><button type="button" class="btn btn-success navigate">Nawiguj</button>'
+      content: '<div class="infowindow">'+
+      $(this).attr('name') + '<br>' +
+      $(this).attr('address') +
+      '<br><button type="button" class="btn btn-success btn-sm" id="navigate">Nawiguj</button></div>'
     }
   });
 

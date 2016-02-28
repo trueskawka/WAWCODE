@@ -23,6 +23,8 @@ function cancelRoute() {
   is_travelling = false;
 }
 
+$('#cancel-route').on("click", cancelRoute);
+
 function initMap() {
   $('#instructions-panel').hide();
   map = new GMaps({
@@ -174,7 +176,7 @@ var drawRouteOnClick = function() {
 }
 
 function markerClick() {
-  window.is_travelling = true;
+  is_travelling = true;
   dst_lat = $(this).attr('data-lat');
   dst_long = $(this).attr('data-lon');
   map.cleanRoute();

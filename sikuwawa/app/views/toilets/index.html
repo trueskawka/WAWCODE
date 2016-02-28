@@ -90,23 +90,22 @@
 
       </div>
       <div class="navbar navbar-default navbar-static-top">
-        opcje wyszukiwania
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-header">
+        <a class="navbar-brand" href="#">SIKUWAW</a>
+        opcje wyszukiwania <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-header">
           ☰
         </button>
-        <a class="navbar-brand" href="#">SIKUWAWA</a>
       </div>
 
       <div class="panel" id="quicksearch">
         <div class="row">
           <div class="col-xs-4">
-            <button type='button' class='btn btn-block btn-primary' style="white-space:normal;">Znajdz najblizszy</button>
+            <button type='button' onClick="findNearest()" class='btn btn-info btn-block' style="white-space:normal;">Znajdz najblizszy</button>
           </div>
           <div class="col-xs-4">
-            <button type='button' class='btn btn-block btn-primary' style="white-space:normal;">Znajdz bezplatny</button>
+            <button type='button' onClick="findFreeOfCharge()" class='btn btn-info btn-block' style="white-space:normal;">Znajdz bezplatny</button>
           </div>
           <div class="col-xs-4">
-            <button type='button' class='btn btn-block btn-primary' style="white-space:normal;">Najlepiej Oceniony</button>
+            <button type='button' onClick="findWithBestOpinons()" class='btn btn-info btn-block' style="white-space:normal;">Najlepiej Oceniony</button>
           </div>
         </div>
       </div>
@@ -114,7 +113,7 @@
         <div class="panel-heading">Wskazowki dojscia</div>
         <div class="panel-body">
           <div id="instructions" style="max-height:250px; width:100%; overflow:auto; clear:both;"></div>
-          <button type='button' class='btn btn-danger btn-block'>Anuluj</button>
+          <button type='button' id="cancel-route" onclick="cancelRoute()" class='btn btn-danger btn-block'>Anuluj</button>
         </div>
       </div>
 
@@ -138,6 +137,27 @@
 
     <!-- Temporary -->
     <script>
+      var map;
+
+      function findNearest() {
+
+      }
+
+      function findFreeOfCharge() {
+
+      }
+
+      function findWithBestOpinions() {
+
+      }
+
+      function cancelRoute() {
+        map.cleanRoute();
+        $('#instructions').empty();
+        $('#instructions-panel').hide('fast', function() {});
+        $('#quicksearch').slideDown(200, function() {});
+      }
+
       $(document).ready(function() {
         var gMarkers_disabled = [], gMarkers_mom = [], gMarkers_free=[];
         var toitoi = [], cafe = [], mac = [], parkride = [], stops = [], rest = [], malls = [];
@@ -146,7 +166,7 @@
         var my_long;
 
         $('#instructions-panel').hide();
-        var map = new GMaps({
+        map = new GMaps({
           el: '#map',
           lat: 52.14,
           lng: 21.0,
@@ -226,7 +246,7 @@
         var drawRouteOnClick = function() {
           map.cleanRoute();
           $('#instructions').empty();
-          $('#instructions-panel').slideDown(600, function() {});
+          $('#instructions-panel').slideDown(200, function() {});
           $('#quicksearch').hide('fast', function() {});
           map.travelRoute({
             origin: [
@@ -238,7 +258,7 @@
             travelMode: 'walking',
             step: function(e) {
               $('#instructions').append('<li>' + e.instructions + '</li>');
-              $('#instructions li:eq(' + e.step_number + ')').delay(450 * e.step_number).fadeIn(200, function() {
+              $('#instructions li:eq(' + e.step_number + ')').delay(10 * e.step_number).fadeIn(200, function() {
                 map.drawPolyline({path: e.path, strokeColor: '#131540', strokeOpacity: 0.6, strokeWeight: 6});
               });
             }
@@ -337,32 +357,61 @@
 
         });
 
-        $("#disabled").change(function() {
-          if (this.checked) {
-            map.removeMarkers(gMarkers_disabled);
-          } else {
-            if ($("#free").is(":checked") && $("#przewijak").is(":checked")) {
-              var disf = $(gMarkers_disabled).not(gMarkers_free).get();
-              var disfm = $(disf).not(gMarkers_mom).get();
-              console.log(disfm);
-              $.each(disfm, function(index, obj) {
+        var disableMarkers = function(vector){
+            if ($("#free").is(":checked")
+                && $("#disabled").is(":checked")
+                && $("#przewijak").is(":checked")) {
+                  var dism = $(vector).not(gMarkers_mom).get();
+                  var dismd = $(dism).not(gMarkers_disabled).get();
+                  var dismdf = $(dismd).not(gMarkers_free).get();
+                  $.each(dismdf, function(index, obj) {
+                    var marker = map.addMarker(obj);
+                  });
+            } else if ($("#disabled").is(":checked") && $("#free").is(":checked")) {
+              var disd = $(vector).not(gMarkers_disabled).get();
+              var disdf = $(disd).not(gMarkers_free).get();
+              $.each(disdf, function(index, obj) {
+                var marker = map.addMarker(obj);
+              });
+            } else if ($("#disabled").is(":checked") && $("#przewijak").is(":checked")) {
+              var disd = $(vector).not(gMarkers_disabled).get();
+              var disdm = $(disd).not(gMarkers_mom).get();
+              $.each(disdm, function(index, obj) {
+                var marker = map.addMarker(obj);
+              });
+            } else if ($("#free").is(":checked") && $("#przewijak").is(":checked")) {
+              var disd = $(vector).not(gMarkers_free).get();
+              var disdm = $(disd).not(gMarkers_mom).get();
+              $.each(disdm, function(index, obj) {
+                var marker = map.addMarker(obj);
+              });
+            } else if ($("#disabled").is(":checked")) {
+              var disd = $(vector).not(gMarkers_disabled).get();
+              $.each(disd, function(index, obj) {
                 var marker = map.addMarker(obj);
               });
             } else if ($("#free").is(":checked")) {
-              var disf = $(gMarkers_disabled).not(gMarkers_free).get();
+              var disf = $(vector).not(gMarkers_free).get();
               $.each(disf, function(index, obj) {
                 var marker = map.addMarker(obj);
               });
             } else if ($("#przewijak").is(":checked")) {
-              var dism = $(gMarkers_disabled).not(gMarkers_mom).get();
+              var dism = $(vector).not(gMarkers_mom).get();
               $.each(dism, function(index, obj) {
                 var marker = map.addMarker(obj);
               });
             } else {
-              $.each(gMarkers_disabled, function(index, obj) {
+              $.each(vector, function(index, obj){
                 var marker = map.addMarker(obj);
               });
             }
+        }
+
+        $("#disabled").change(function() {
+          if (this.checked) {
+            map.removeMarkers(gMarkers_disabled);
+          } else {
+            disableMarkers(gMarkers_disabled);
           }
         });
 
@@ -370,27 +419,7 @@
           if (this.checked) {
             map.removeMarkers(gMarkers_free);
           } else {
-            if ($("#disabled").is(":checked") && $("#przewijak").is(":checked")) {
-              var disd = $(gMarkers_free).not(gMarkers_disabled).get();
-              var disdm = $(disd).not(gMarkers_mom).get();
-              $.each(disdm, function(index, obj) {
-                var marker = map.addMarker(obj);
-              });
-            } else if ($("#disabled").is(":checked")) {
-              var disd = $(gMarkers_free).not(gMarkers_disabled).get();
-              $.each(disd, function(index, obj) {
-                var marker = map.addMarker(obj);
-              });
-            } else if ($("#przewijak").is(":checked")) {
-              var dism = $(gMarkers_free).not(gMarkers_mom).get();
-              $.each(dism, function(index, obj) {
-                var marker = map.addMarker(obj);
-              });
-            } else {
-              $.each(gMarkers_free, function(index, obj) {
-                var marker = map.addMarker(obj);
-              });
-            }
+            disableMarkers(gMarkers_free);
           }
         });
 
@@ -399,106 +428,64 @@
             map.removeMarkers(gMarkers_mom);
 
           } else {
-            if ($("#disabled").is(":checked") && $("#free").is(":checked")) {
-              var disd = $(gMarkers_mom).not(gMarkers_disabled).get();
-              var disdf = $(disd).not(gMarkers_free).get();
-              $.each(disdf, function(index, obj) {
-                var marker = map.addMarker(obj);
-              });
-            } else if ($("#disabled").is(":checked")) {
-              var disd = $(gMarkers_mom).not(gMarkers_disabled).get();
-              $.each(disd, function(index, obj) {
-                var marker = map.addMarker(obj);
-              });
-            } else if ($("#free").is(":checked")) {
-              var disf = $(gMarkers_mom).not(gMarkers_free).get();
-              $.each(disf, function(index, obj) {
-                var marker = map.addMarker(obj);
-              });
-            } else {
-              $.each(gMarkers_mom, function(index, obj) {
-                var marker = map.addMarker(obj);
-              });
-            }
+            disableMarkers(gMarkers_mom);
           }
         });
 
-        $("#mac").change(
-          function(){
-            if (!this.checked) {
-              map.removeMarkers(mac);
-            } else {
-              $.each(mac, function(index, obj){
-                var marker = map.addMarker(obj);
-              });
-            }
-          });
+        $("#mac").change(function(){
+          if (!this.checked) {
+            map.removeMarkers(mac);
+          } else {
+            disableMarkers(mac);
+          }
+        });
 
-        $("#rest").change(
-          function(){
-            if (!this.checked) {
-              map.removeMarkers(rest);
-            } else {
-              $.each(rest, function(index, obj){
-                var marker = map.addMarker(obj);
-              });
-            }
-          });
+        $("#rest").change(function(){
+          if (!this.checked) {
+            map.removeMarkers(rest);
+          } else {
+            disableMarkers(rest);
+          }
+        });
+        $("#toitoi").change(function(){
+          if (!this.checked) {
+            map.removeMarkers(toitoi);
+          } else {
+            disableMarkers(toitoi);
+          }
+        });
 
-        $("#toitoi").change(
-          function(){
-            if (!this.checked) {
-              map.removeMarkers(toitoi);
-            } else {
-              $.each(toitoi, function(index, obj){
-                var marker = map.addMarker(obj);
-              });
-            }
-          });
+        $("#cafe").change(function(){
+          if (!this.checked) {
+            map.removeMarkers(cafe);
+          } else {
+            disableMarkers(cafe);
+          }
+        });
 
-        $("#cafe").change(
-          function(){
-            if (!this.checked) {
-              map.removeMarkers(cafe);
-            } else {
-              $.each(cafe, function(index, obj){
-                var marker = map.addMarker(obj);
-              });
-            }
-          });
+        $("#parkride").change(function(){
+          if (!this.checked) {
+            map.removeMarkers(parkride);
+          } else {
+            disableMarkers(parkride);
+          }
+        });
 
-        $("#parkride").change(
-          function(){
-            if (!this.checked) {
-              map.removeMarkers(parkride);
-            } else {
-              $.each(parkride, function(index, obj){
-                var marker = map.addMarker(obj);
-              });
-            }
-          });
+        $("#stops").change(function(){
+          if (!this.checked) {
+            map.removeMarkers(stops);
+          } else {
+            disableMarkers(stops);
+          }
+        });
 
-        $("#stops").change(
-          function(){
-            if (!this.checked) {
-              map.removeMarkers(stops);
-            } else {
-              $.each(stops, function(index, obj){
-                var marker = map.addMarker(obj);
-              });
-            }
-          });
-
-        $("#malls").change(
-          function(){
-            if (!this.checked) {
-              map.removeMarkers(malls);
-            } else {
-              $.each(malls, function(index, obj){
-                var marker = map.addMarker(obj);
-              });
-            }
-          });
+        $("#malls").change(function(){
+          if (!this.checked) {
+            map.removeMarkers(malls);
+          } else {
+            disableMarkers(malls);
+          }
+        });
 
         function error(err) {
           console.warn('ERROR(' + err.code + '): ' + err.message);

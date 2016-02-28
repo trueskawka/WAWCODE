@@ -11,7 +11,7 @@ var Toilets = function() {
 
   var inf = new google.maps.InfoWindow();
 
-  function cancelRoute() {
+  var cancelRoute = function () {
     map.cleanRoute();
     $('#instructions').empty();
     $('#instructions-panel').addClass('hidden');
@@ -23,22 +23,6 @@ var Toilets = function() {
 
   $('#cancel-route').on("click", cancelRoute);
 
-  function hideInstructions() {
-    $('#instructions').empty();
-    $('#instructions-panel').hide('fast', function() {});
-    $('#quicksearch').slideDown(200, function() {});
-  }
-
-  $('#hide-instructions').on("click", hideInstructions);
-
-
-  function showInstructions() {
-    $('#instructions-panel').slideDown('fast', function() {});
-  }
-
-  $('#show-instructions').on("click", showInstructions);
-
-  /* TODO */
   $('#toggle-instructions').on("click", function() {
     if ($('#instructions-panel').hasClass('hidden')) {
       $('#instructions-panel').removeClass('hidden');
@@ -252,8 +236,12 @@ var Toilets = function() {
     });
 
     var assigner = function() {
-      dst_lat = $(this).attr('data-lat');
-      dst_long = $(this).attr('data-lon');
+      if (($(this).attr('data-lat') != dst_lat) || (($(this).attr('data-lon') != data_lon)))
+      {
+        dst_lat = $(this).attr('data-lat');
+        dst_long = $(this).attr('data-lon');
+        cancelRoute();
+      }
     }
 
     var marker = map.addMarker({

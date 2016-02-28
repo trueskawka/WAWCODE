@@ -14,7 +14,8 @@ var Toilets = function() {
   function cancelRoute() {
     map.cleanRoute();
     $('#instructions').empty();
-    $('#instructions-panel').hide('fast', function() {});
+    $('#instructions-panel').addClass('hidden');
+    $('#toggle-instructions').text('Pokaż wskazówki');
     $('#navigationoptions').addClass('hidden');
 
     is_travelling = false;
@@ -39,6 +40,17 @@ var Toilets = function() {
 
   /* TODO */
   $('#toggle-instructions').on("click", function() {
+    if ($('#instructions-panel').hasClass('hidden')) {
+      $('#instructions-panel').removeClass('hidden');
+      $('#toggle-instructions').text('Ukryj wskazówki');
+      /*
+      $('#toggle-instructions').removeClass('btn-info');
+      $('#toggle-instructions').addClass('btn-danger');
+      */
+    } else {
+      $('#instructions-panel').addClass('hidden');
+      $('#toggle-instructions').text('Pokaż wskazówki');
+    }
 
   });
 

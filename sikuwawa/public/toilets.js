@@ -7,7 +7,7 @@ var Toilets = function() {
   var dst_lat;
   var dst_long;
   var is_travelling = false;
-  var first_time = false;
+  var first_time = true;
 
   var inf = new google.maps.InfoWindow();
 

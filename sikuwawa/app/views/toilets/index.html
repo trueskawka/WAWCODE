@@ -23,6 +23,7 @@
     <!--TiTaToggle-->
     <link rel="stylesheet" type="text/css" href="//cdn.sm.plus/bootstrap/titatoggle/1.2.8/titatoggle.min.css"/>
 
+
   </head>
 
   <body>
@@ -84,12 +85,26 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-header">
           ☰
         </button>
+        <a class="navbar-brand" href="#">SIKUWAWA</a>
       </div>
 
-      <div class="panel">
-        <div id="instructions"></div>
-        <div id="map"></div>
+      <div class="panel" id="quicksearch">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-4">
+              <button type='button' class='btn btn-default btn-block'>Znajdz najblizszy</button>
+            </div>
+            <div class="col-xs-4">
+              <button type='button' class='btn btn-default btn-block'>Znajdz bezplatny</button>
+            </div>
+            <div class="col-xs-4">
+              <button type='button' class='btn btn-default btn-block'>Znajdz Najlepiej Oceniony</button>
+            </div>
+          </div>
+        </div>
       </div>
+      <div id="instructions" style="height:250px; width:100%; overflow:auto; clear:both;"></div>
+      <div id="map"></div>
 
       <% @toilets.each do |toilet| %>
       <div class="invisible toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>" name="name"></div>
@@ -111,6 +126,7 @@
         var my_lat;
         var my_long;
 
+        $('#instructions').hide();
         var map = new GMaps({
           el: '#map',
           lat: 52.14,
@@ -151,6 +167,12 @@
         var drawRouteOnClick = function() {
           map.cleanRoute();
           $('#instructions').empty();
+          $('#instructions').slideDown(600, function() {
+
+          });
+          $('#quicksearch').hide('fast', function() {
+
+          });
           map.travelRoute({
             origin: [
               my_lat, my_long

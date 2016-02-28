@@ -8,6 +8,8 @@ var dst_lat;
 var dst_long;
 var is_travelling;
 
+var inf = new google.maps.InfoWindow();
+
 function findNearest() {}
 
 function findFreeOfCharge() {}
@@ -258,7 +260,9 @@ $(".toilet").each(function() {
   });
 
   marker.addListener('click', function() {
+    inf.close();
     infoWindow.open(marker.map, marker);
+    inf = infoWindow;
   });
 
   google.maps.event.addListenerOnce(infoWindow, 'domready', function() {

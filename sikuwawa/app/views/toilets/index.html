@@ -34,6 +34,10 @@
         visibility: hidden !important;
       }
 
+      img {
+        height: 30px;
+      }
+
     </style>
 
   </head>
@@ -130,6 +134,14 @@
 
       <br>
       <div id="map"></div>
+      <div id="legend" style="padding-top: 10px">
+        <p><img src="icon.png"> - toitoi</p>
+        <p><img src="cafe-icon.png"> - kawiarnie</p>
+        <p><img src="rest-icon.png"> - restauracje</p>
+        <p><img src="mac-icon.png"> - McDonald's</p>
+        <p><img src="park-icon.png"> - parkuj i jedź / przystanki komunikacji miejskiej</p>
+        <p><img src="gall-icon.png"> - galerie handlowe</p>
+      </div>
 
       <% @toilets.each do |toilet| %>
       <div class="hidden toilet" data-lat="<%= toilet.lat %>" data-lon="<%= toilet.lon %>" name="<%= toilet.name %>" disabledfriendly="<%=toilet.disabledfriendly%>" momfriendly="<%=toilet.momfriendly%>" price="<%=toilet.prize%>" type="<%= toilet.toilettype %>" address="<%= toilet.adress %>"></div>

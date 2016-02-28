@@ -37,23 +37,6 @@ function cancelRoute() {
 
 $('#cancel-route').on("click", cancelRoute);
 
-function hideInstructions() {
-  $('#instructions').empty();
-  $('#instructions-panel').hide('fast', function() {});
-  $('#quicksearch').slideDown(200, function() {});
-}
-
-$('#hide-instructions').on("click", hideInstructions);
-  var cancelRoute = function () {
-    map.cleanRoute();
-    $('#instructions').empty();
-    $('#instructions-panel').addClass('hidden');
-    $('#toggle-instructions').text('Pokaż wskazówki');
-    $('#navigationoptions').addClass('hidden');
-
-    is_travelling = false;
-  }
-
   $('#cancel-route').on("click", cancelRoute);
 
   $('#toggle-instructions').on("click", function() {

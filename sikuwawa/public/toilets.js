@@ -29,8 +29,9 @@ function findWithBestOpinions() {}
 function cancelRoute() {
   map.cleanRoute();
   $('#instructions').empty();
-  $('#instructions-panel').hide('fast', function() {});
-  $('#quicksearch').slideDown(200, function() {});
+  $('#navigationoptions').addClass('hidden');
+  $('#instructions-panel').addClass('hidden');
+  $('#toggle-instructions').text('Pokaż wskazówki');
 
   is_travelling = false;
 }
